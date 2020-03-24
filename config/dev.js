@@ -13,7 +13,18 @@ const config = {
     filename: 'bundle-[name].[hash:8].js',
     publicPath: ''
   },
-  resolve: { extensions: ['.js', '.json', '.scss'] },
+  resolve: {
+    extensions: ['.js', '.json', '.scss'],
+    alias: {
+      assets: path.resolve(sourceDirectory, 'assets'),
+      components: path.resolve(sourceDirectory, 'components'),
+      constants: path.resolve(sourceDirectory, 'constants'),
+      data: path.resolve(sourceDirectory, 'data'),
+      models: path.resolve(sourceDirectory, 'models'),
+      services: path.resolve(sourceDirectory, 'services'),
+      utilities: path.resolve(sourceDirectory, 'utilities')
+    }
+  },
   devServer: {
     // inline: true,
     port: 31291,
