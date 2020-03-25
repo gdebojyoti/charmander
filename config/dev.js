@@ -16,12 +16,16 @@ const config = {
   resolve: {
     extensions: ['.js', '.json', '.scss'],
     alias: {
+      actions: path.resolve(sourceDirectory, 'actions'),
       assets: path.resolve(sourceDirectory, 'assets'),
       components: path.resolve(sourceDirectory, 'components'),
       constants: path.resolve(sourceDirectory, 'constants'),
       data: path.resolve(sourceDirectory, 'data'),
       models: path.resolve(sourceDirectory, 'models'),
+      pages: path.resolve(sourceDirectory, 'pages'),
+      reducers: path.resolve(sourceDirectory, 'reducers'),
       services: path.resolve(sourceDirectory, 'services'),
+      store: path.resolve(sourceDirectory, 'store'),
       utilities: path.resolve(sourceDirectory, 'utilities')
     }
   },

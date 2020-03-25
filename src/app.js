@@ -1,14 +1,17 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux'
 
-import Uno from 'components/Game'
+import configureStore from 'store/configureStore'
+import Game from 'pages/Game'
+
+const store = configureStore()
 
 const App = () => {
   return (
-    <div>
-      <h2>Uno!</h2>
-      <Uno />
-    </div>
+    <Provider store={store}>
+      <Game />
+    </Provider>
   )
 }
 

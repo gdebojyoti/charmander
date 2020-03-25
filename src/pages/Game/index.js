@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
+import * as actions from 'actions/socket'
 import Engine from 'services/Engine'
 import PlayerCard from 'components/PlayerCard'
 import Card from 'components/Card'
 import { getDetailsOfCurrentTurn } from 'utilities/general'
 import './style'
 
-const Uno = () => {
+const Game = ({ actions }) => {
   const [host, setHost] = useState(null)
   const [opponents, setOpponents] = useState([])
   const [matchDetails, setMatchDetails] = useState(null)
 
   useEffect(() => {
     Engine.initialize()
+    actions.initialize({
+      matchId: 31291,
+      username: 'deb'
+    })
   }, [])
 
   const matchId = 31291
@@ -154,4 +161,12 @@ const DummyZone = ({ matchId, startMatch }) => {
   )
 }
 
-export default Uno
+const mapStateToProps = ({ profile, players, match: { id, status } = {} }) => ({ matchId: id, matchStatus: status, players, profile })
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game)
