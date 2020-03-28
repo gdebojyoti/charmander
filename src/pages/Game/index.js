@@ -2,29 +2,74 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import { getValue } from 'utilities/localStorage'
+import EditProfile from 'components/EditProfile'
+import HostOrClient from 'components/HostOrClient'
 import * as actions from 'actions/socket'
+import { updateProfile } from 'actions/profile'
 import Engine from 'services/Engine'
 import PlayerCard from 'components/PlayerCard'
 import Card from 'components/Card'
 import { getDetailsOfCurrentTurn } from 'utilities/general'
 import './style'
 
-const Game = ({ actions }) => {
+const Game = ({ actions, updateProfile, profile }) => {
+  const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
+  const [hostOrClient, setHostOrClient] = useState(0) // 0: none; 1: host; 2: client
+
   const [host, setHost] = useState(null)
   const [opponents, setOpponents] = useState([])
   const [matchDetails, setMatchDetails] = useState(null)
 
+  // set isReady to true, if name & username exist
   useEffect(() => {
-    Engine.initialize()
-    actions.initialize({
-      matchId: 31291,
-      username: 'deb'
-    })
+    // check for username & name from local storage
+    const { name = '', username = '' } = getValue('profile') || {}
+    console.log('profileData', name, username)
+    if (name && username) {
+      setIsReady(true)
+      updateProfile({ name, username })
+    }
   }, [])
+
+  // when isReady = true, open socket connection & host game
+  useEffect(() => {
+    if (hostOrClient) {
+      hostOrClient === 1 && updateProfile({ isHost: true })
+      console.log('profile', profile, profile.isHost)
+      Engine.initialize()
+      actions.initialize({
+        ...profile,
+        isHost: hostOrClient === 1
+      })
+    }
+  }, [hostOrClient])
+
+  // if isReady = false, open form
+  if (!isReady) {
+    const onReady = (profileData) => {
+      setIsReady(true)
+      updateProfile(profileData)
+    }
+    return <EditProfile onReady={onReady} />
+  }
+
+  // if hostOrClient is not set (0), open form
+  if (!hostOrClient) {
+    const onSelection = (index) => {
+      console.log('user chooses to be a', [null, 'host', 'client'][index])
+      setHostOrClient(index)
+    }
+    return <HostOrClient onSelection={onSelection} />
+  }
 
   const matchId = 31291
 
   const startMatch = () => {
+    actions.startMatch({
+      matchId
+    })
+
     const matchDetails = Engine.startMatch(matchId)
     if (matchDetails) {
       const host = matchDetails.players.find(({ id }) => matchDetails.host === id)
@@ -165,7 +210,8 @@ const mapStateToProps = ({ profile, players, match: { id, status } = {} }) => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
+    updateProfile: bindActionCreators(updateProfile, dispatch)
   }
 }
 

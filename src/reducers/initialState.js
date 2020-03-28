@@ -5,17 +5,14 @@ window.__INITIALSTATE__ = {
   players: {},
   cells: {},
   profile: {
-    id: '',
+    username: '',
     name: '',
-    home: '',
-    matchId: 'some_id',
     isHost: false
   },
   match: {
     id: null,
     status: matchStatus.PREMATCH,
-    currentTurn: '',
-    lastRoll: 0
+    currentTurn: ''
   },
   network: {
     status: networkStatus.CONNECTED,

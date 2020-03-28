@@ -9,23 +9,12 @@ const remoteUrl = window.location.host.indexOf('playludo') >= 0 ? 'https://charm
 
 const socket = openSocket(remoteUrl)
 
-const initialize = ({ username: playerId, matchId }) => {
+const initialize = ({ username, name, isHost, matchId = 31291 }) => {
   return (dispatch, getState) => {
-    // const { home } = getPlayerDetails()
-    if (matchId) {
-      console.log('joining...', matchId, typeof matchId)
-      socket.emit('JOIN_MATCH', {
-        playerId,
-        matchId
-      })
+    if (isHost) {
+      socket.emit('HOST_MATCH', { username, name })
     } else {
-      console.log('hosting...')
-      socket.emit('HOST_MATCH', {
-        playerId
-      })
-      dispatch({
-        type: 'SET_AS_HOST'
-      })
+      socket.emit('JOIN_MATCH', { matchId, username, name })
     }
 
     socket.on('connect', () => {
@@ -36,11 +25,10 @@ const initialize = ({ username: playerId, matchId }) => {
           status: networkStatus.CONNECTED
         }
       })
-      const { match: { id } } = getState()
       console.log('rejoining...', matchId)
       socket.emit('JOIN_MATCH', {
-        playerId,
-        matchId: id
+        username,
+        matchId
       })
     })
 
@@ -81,17 +69,18 @@ const initialize = ({ username: playerId, matchId }) => {
       console.warn('failed to reconnect')
     })
 
-    // when current player (client) is set as host
-    socket.on('SET_AS_HOST', () => {
-      dispatch({
-        type: 'SET_AS_HOST'
-      })
+    // when current player (client) has joined
+    socket.on('MATCH_HOSTED', ({ matchId }) => {
+      console.log('new match hosted', matchId)
+      // update match ID in local storage
+      setValue('matchId', matchId)
     })
 
     // when current player (client) has joined
-    socket.on('CLIENT_JOINED', ({ matchId }) => {
-      // update match ID in local storage
-      setValue('matchId', matchId)
+    socket.on('MATCH_JOINED', (data) => {
+      console.log('client joined', data)
+      // // update match ID in local storage
+      // setValue('matchId', matchId)
     })
 
     // when no match with matchId is found
@@ -115,23 +104,6 @@ const initialize = ({ username: playerId, matchId }) => {
       console.log('a player has left', playerDetails)
     })
 
-    // update current turn
-    socket.on('SET_NEXT_TURN', ({ playerId }) => {
-      console.info('next turn belongs to:', playerId)
-      dispatch({
-        type: 'UPDATE_NEXT_TURN',
-        payload: playerId
-      })
-      dispatch({
-        type: 'UPDATE_LAST_ROLL',
-        payload: null
-      })
-      dispatch({
-        type: 'UPDATE_DICE_ROLLED',
-        payload: false
-      })
-    })
-
     // game over
     socket.on('GAME_OVER', ({ winner }) => {
       console.log(`Winner Winner Chicken Dinner! Congrats ${winner}`)
@@ -140,8 +112,11 @@ const initialize = ({ username: playerId, matchId }) => {
   }
 }
 
-const startMatch = () => {
-  socket.emit('START_MATCH')
+const startMatch = ({ matchId }) => {
+  return (dispatch, getState) => {
+    console.log('matchId start', matchId)
+    socket.emit('START_MATCH', { matchId })
+  }
 }
 
 const onSelectCard = card => {
