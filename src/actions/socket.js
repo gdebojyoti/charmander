@@ -69,34 +69,44 @@ const initialize = ({ username, name, isHost, matchId = 31291 }) => {
       console.warn('failed to reconnect')
     })
 
-    // when current player (client) has joined
-    socket.on('MATCH_HOSTED', ({ matchId }) => {
-      console.log('new match hosted', matchId)
+    // messages from server
+
+    // when current player (client) has successfully hosted match
+    socket.on('MATCH_HOSTED', matchId => {
+      console.log('Hosted new match', matchId)
       // update match ID in local storage
       setValue('matchId', matchId)
     })
 
     // when current player (client) has joined
-    socket.on('MATCH_JOINED', (data) => {
-      console.log('client joined', data)
-      // // update match ID in local storage
-      // setValue('matchId', matchId)
+    socket.on('MATCH_JOINED', matchDetails => {
+      console.log('Joined match', matchDetails)
     })
 
     // when no match with matchId is found
-    socket.on('MATCH_NOT_FOUND', ({ matches }) => {
-      console.log('Match not found! Existing ones:', matches)
-      console.log('Joining a new one...')
-      // setValue('matchId', null)
+    socket.on('MATCH_JOIN_FAILED', () => {
+      console.warn('Could not join match')
+      setValue('matchId', null)
     })
 
     // when a new player joins
     socket.on('PLAYER_JOINED', data => {
-      // update list of all players
-      dispatch({
-        type: 'PLAYER_JOINED',
-        payload: data
-      })
+      console.log('new player joined', data)
+      // // update list of all players
+      // dispatch({
+      //   type: 'PLAYER_JOINED',
+      //   payload: data
+      // })
+    })
+
+    // when match start fails
+    socket.on('MATCH_START_FAILED', reason => {
+      console.warn('Could not start match', reason)
+    })
+
+    // when match starts
+    socket.on('MATCH_STARTED', matchDetails => {
+      console.info('Match has started', matchDetails)
     })
 
     // when a player leaves
