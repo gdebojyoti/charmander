@@ -73,7 +73,7 @@ const Game = (props) => {
       if (index === 1) {
         socketActions.hostMatch({ username, name })
       } else if (index === 2) {
-        socketActions.joinMatch({ username, name })
+        socketActions.joinMatch({ username, name, matchId })
       }
 
       setShowChoiceModal(false)
@@ -99,12 +99,6 @@ const Game = (props) => {
 
     console.log('onCardSelect options', options)
     socketActions.selectCard(index, options)
-
-    // const matchDetails = Engine.cardPlayed(matchId, index, options)
-
-    // if (matchDetails) {
-    //   setMatchDetails({ ...matchDetails })
-    // }
   }
 
   const onTake = (playerId) => {

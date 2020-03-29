@@ -182,7 +182,7 @@ export const hostMatch = ({ username, name }) => {
   }
 }
 
-export const joinMatch = ({ username, name, matchId }) => {
+export const joinMatch = ({ username, name, matchId = 31291 }) => {
   return () => {
     socket.emit('JOIN_MATCH', { matchId, username, name })
   }
