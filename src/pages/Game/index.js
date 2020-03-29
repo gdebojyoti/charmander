@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import matchStatus from 'constants/matchStatus'
 import { getValue } from 'utilities/localStorage'
 import EditProfile from 'components/EditProfile'
 import HostOrClient from 'components/HostOrClient'
@@ -10,26 +11,30 @@ import * as profileActions from 'actions/profile'
 import Engine from 'services/Engine'
 import PlayerCard from 'components/PlayerCard'
 import Card from 'components/Card'
-import { getDetailsOfCurrentTurn } from 'utilities/general'
+
 import './style'
 
-const Game = ({ socketActions, profileActions, profile }) => {
+const Game = (props) => {
+  const { match, profile, socketActions, profileActions } = props
+
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
-  const [hostOrClient, setHostOrClient] = useState(0) // 0: none; 1: host; 2: client
+  const [showChoiceModal, setShowChoiceModal] = useState(true) // modal for user to choose between host & client
 
-  const [host, setHost] = useState(null)
-  const [opponents, setOpponents] = useState([])
-  const [matchDetails, setMatchDetails] = useState(null)
+  const { players, status, currentTurn, lastCardData } = match
+  // const currentTurn = getDetailsOfCurrentTurn(matchDetails)
 
+  const host = players.find(player => player.username === match.host)
+  const opponents = players.filter(player => player.username !== match.host)
+
+  // connect to Socket server; retrieve profile data from local storage
   useEffect(() => {
+    // connect to Socket server
     socketActions.initialize()
-  }, [])
 
-  // set isReady to true, if name & username exist
-  useEffect(() => {
     // check for username & name from local storage
     const { name = '', username = '' } = getValue('profile') || {}
-    console.log('profileData', name, username)
+
+    // set isReady to true, if name & username exist
     if (name && username) {
       setIsReady(true)
       profileActions.updateProfile({ name, username })
@@ -38,26 +43,18 @@ const Game = ({ socketActions, profileActions, profile }) => {
       const matchId = getValue('matchId')
       if (matchId) {
         socketActions.rejoinMatch({ username, matchId })
-        console.error('in the middle of a game', matchId)
         console.log('in the middle of a game', matchId)
       }
     }
   }, [])
 
-  // when isReady = true, open socket connection & host game
+  // TODO: find a better condition for hiding modal
+  // no need for choice modal if status is already LIVE
   useEffect(() => {
-    if (hostOrClient) {
-      const { username, name } = profile
-
-      if (hostOrClient === 1) {
-        socketActions.hostMatch({ username, name })
-      } else if (hostOrClient === 2) {
-        socketActions.joinMatch({ username, name })
-      }
-
-      Engine.initialize()
+    if (status === matchStatus.LIVE) {
+      setShowChoiceModal(false)
     }
-  }, [hostOrClient])
+  }, [status])
 
   // if isReady = false, open edit profile form
   if (!isReady) {
@@ -68,10 +65,18 @@ const Game = ({ socketActions, profileActions, profile }) => {
     return <EditProfile onReady={onReady} />
   }
 
-  // if hostOrClient is not set (0), open form to select host vs join (as a client)
-  if (!hostOrClient) {
+  // if showChoiceModal = true, open form to select host vs join (as a client)
+  if (showChoiceModal) {
     const onSelection = (index) => {
-      setHostOrClient(index)
+      const { username, name } = profile
+
+      if (index === 1) {
+        socketActions.hostMatch({ username, name })
+      } else if (index === 2) {
+        socketActions.joinMatch({ username, name })
+      }
+
+      setShowChoiceModal(false)
     }
     return <HostOrClient onSelection={onSelection} />
   }
@@ -82,22 +87,6 @@ const Game = ({ socketActions, profileActions, profile }) => {
     socketActions.startMatch({
       matchId
     })
-
-    const matchDetails = Engine.startMatch(matchId)
-    if (matchDetails) {
-      const host = matchDetails.players.find(({ id }) => matchDetails.host === id)
-      if (host) {
-        setHost(host)
-      }
-
-      const opponents = matchDetails.players.filter(({ id }) => matchDetails.host !== id)
-      setOpponents(opponents)
-
-      if (host && opponents.length) {
-        console.log('Starting match', matchDetails)
-        setMatchDetails({ ...matchDetails })
-      }
-    }
   }
 
   const onCardSelect = (index, playerId, options) => {
@@ -111,11 +100,12 @@ const Game = ({ socketActions, profileActions, profile }) => {
     }
 
     console.log('onCardSelect', index, playerId)
-    const matchDetails = Engine.cardPlayed(matchId, index, options)
 
-    if (matchDetails) {
-      setMatchDetails({ ...matchDetails })
-    }
+    // const matchDetails = Engine.cardPlayed(matchId, index, options)
+
+    // if (matchDetails) {
+    //   setMatchDetails({ ...matchDetails })
+    // }
   }
 
   const onTake = (playerId) => {
@@ -128,11 +118,13 @@ const Game = ({ socketActions, profileActions, profile }) => {
       return
     }
 
-    const matchDetails = Engine.drawCard(matchId)
+    console.log('taking card..')
 
-    if (matchDetails) {
-      setMatchDetails({ ...matchDetails })
-    }
+    // const matchDetails = Engine.drawCard(matchId)
+
+    // if (matchDetails) {
+    //   setMatchDetails({ ...matchDetails })
+    // }
   }
 
   const onPass = (playerId) => {
@@ -145,25 +137,21 @@ const Game = ({ socketActions, profileActions, profile }) => {
       return
     }
 
-    const matchDetails = Engine.passTurn(matchId)
+    console.log('passing turn..')
 
-    if (matchDetails) {
-      setMatchDetails({ ...matchDetails })
-    }
+    // const matchDetails = Engine.passTurn(matchId)
+
+    // if (matchDetails) {
+    //   setMatchDetails({ ...matchDetails })
+    // }
   }
-
-  const currentTurn = getDetailsOfCurrentTurn(matchDetails)
-  // const lastCard = matchDetails ? matchDetails.discardPile.slice(-1)[0] : null
-  const { lastCardData } = matchDetails || {}
-
-  console.log('matchDetails', matchDetails)
 
   return (
     <div>
       <h2>Uno Game!</h2>
 
-      {matchDetails && <div>Status: {matchDetails.status}</div>}
-      {currentTurn && <div>Current turn: {currentTurn.name}</div>}
+      <div>Status: {status}</div>
+      <div>Current turn: {currentTurn}</div>
 
       {lastCardData && (
         <div className='discard-pile'>
@@ -221,12 +209,9 @@ const DummyZone = ({ matchId, startMatch }) => {
 
 const mapStateToProps = ({
   profile,
-  players,
-  match: { id, status } = {}
+  match
 }) => ({
-  matchId: id,
-  matchStatus: status,
-  players,
+  match,
   profile
 })
 
