@@ -1,4 +1,4 @@
-import matchStatus from 'constants/matchStatus'
+// import matchStatus from 'constants/matchStatus'
 import networkStatus from 'constants/networkStatus'
 
 window.__INITIALSTATE__ = {
@@ -10,7 +10,7 @@ window.__INITIALSTATE__ = {
   },
   match: {
     id: null,
-    status: matchStatus.PREMATCH,
+    status: '',
     players: [],
     currentTurn: '',
     host: '',

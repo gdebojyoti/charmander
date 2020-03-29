@@ -84,6 +84,7 @@ export const initialize = () => {
         type: 'UPDATE_MATCH_DETAILS',
         payload: matchDetails
       })
+      setValue('matchId', matchDetails.id)
     })
 
     // when no match with matchId is found
@@ -92,14 +93,15 @@ export const initialize = () => {
       setValue('matchId', null)
     })
 
+    // TODO: optimize payload
     // when a new player joins
-    socket.on('PLAYER_JOINED', data => {
-      console.log('new player joined', data)
-      // // update list of all players
-      // dispatch({
-      //   type: 'PLAYER_JOINED',
-      //   payload: data
-      // })
+    socket.on('PLAYER_JOINED', matchDetails => {
+      console.log('new player joined', matchDetails)
+      // update list of all players
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
     })
 
     // when match start fails
@@ -182,9 +184,9 @@ export const hostMatch = ({ username, name }) => {
   }
 }
 
-export const joinMatch = ({ username, name, matchId = 31291 }) => {
+export const joinMatch = ({ username, name, matchId }) => {
   return () => {
-    socket.emit('JOIN_MATCH', { matchId, username, name })
+    socket.emit('JOIN_MATCH', { matchId: matchId || 31291, username, name })
   }
 }
 

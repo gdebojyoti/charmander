@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import matchStatus from 'constants/matchStatus'
+// import matchStatus from 'constants/matchStatus'
 import { getValue } from 'utilities/localStorage'
 import EditProfile from 'components/EditProfile'
-import HostOrClient from 'components/HostOrClient'
+import HostOrJoin from 'components/HostOrJoin'
 import * as socketActions from 'actions/socket'
 import * as profileActions from 'actions/profile'
 import Engine from 'services/Engine'
@@ -23,8 +23,8 @@ const Game = (props) => {
   const { id: matchId, players, status, currentTurn, lastCardData } = match
   // const currentTurn = getDetailsOfCurrentTurn(matchDetails)
 
-  const host = players.find(player => player.username === match.host)
-  const opponents = players.filter(player => player.username !== match.host)
+  const host = players.find(player => player.username === profile.username)
+  const opponents = players.filter(player => player.username !== profile.username)
 
   // connect to Socket server; retrieve profile data from local storage
   useEffect(() => {
@@ -51,7 +51,7 @@ const Game = (props) => {
   // TODO: find a better condition for hiding modal
   // no need for choice modal if status is already LIVE
   useEffect(() => {
-    if (status === matchStatus.LIVE) {
+    if (status) {
       setShowChoiceModal(false)
     }
   }, [status])
@@ -67,18 +67,17 @@ const Game = (props) => {
 
   // if showChoiceModal = true, open form to select host vs join (as a client)
   if (showChoiceModal) {
-    const onSelection = (index) => {
+    const onHost = () => {
       const { username, name } = profile
-
-      if (index === 1) {
-        socketActions.hostMatch({ username, name })
-      } else if (index === 2) {
-        socketActions.joinMatch({ username, name, matchId })
-      }
-
+      socketActions.hostMatch({ username, name })
       setShowChoiceModal(false)
     }
-    return <HostOrClient onSelection={onSelection} />
+    const onJoin = () => {
+      const { username, name } = profile
+      socketActions.joinMatch({ username, name, matchId })
+      setShowChoiceModal(false)
+    }
+    return <HostOrJoin onHost={onHost} onJoin={onJoin} />
   }
 
   const startMatch = () => {
