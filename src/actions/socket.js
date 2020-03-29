@@ -136,6 +136,38 @@ export const initialize = () => {
       })
     })
 
+    // when invalid card is selected
+    socket.on('CANNOT_PLAY_CARD', reason => {
+      console.info('Cannot play card', reason)
+    })
+
+    // when a card is played
+    socket.on('CARD_PLAYED', matchDetails => {
+      console.info('Card played', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
+    })
+
+    // when a card is played
+    socket.on('CARD_DRAWN', matchDetails => {
+      console.info('Card drawn', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
+    })
+
+    // when a card is played
+    socket.on('TURN_PASSED', matchDetails => {
+      console.info('Turn passed', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
+    })
+
     // game over
     socket.on('GAME_OVER', ({ winner }) => {
       console.log(`Winner Winner Chicken Dinner! Congrats ${winner}`)
@@ -171,4 +203,22 @@ export const rejoinMatch = ({ username, matchId }) => {
 
 export const onSelectCard = card => {
   socket.emit('CARD_SELECTED', card)
+}
+
+export const selectCard = (index, options) => {
+  return (dispatch, getState) => {
+    socket.emit('SELECT_CARD', { index, options })
+  }
+}
+
+export const drawCard = (data) => {
+  return () => {
+    socket.emit('DRAW_CARD', data)
+  }
+}
+
+export const passTurn = (data) => {
+  return () => {
+    socket.emit('PASS_TURN', data)
+  }
 }

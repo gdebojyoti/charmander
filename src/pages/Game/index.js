@@ -20,7 +20,7 @@ const Game = (props) => {
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
   const [showChoiceModal, setShowChoiceModal] = useState(true) // modal for user to choose between host & client
 
-  const { players, status, currentTurn, lastCardData } = match
+  const { id: matchId, players, status, currentTurn, lastCardData } = match
   // const currentTurn = getDetailsOfCurrentTurn(matchDetails)
 
   const host = players.find(player => player.username === match.host)
@@ -81,8 +81,6 @@ const Game = (props) => {
     return <HostOrClient onSelection={onSelection} />
   }
 
-  const matchId = 31291
-
   const startMatch = () => {
     socketActions.startMatch({
       matchId
@@ -99,7 +97,8 @@ const Game = (props) => {
       return
     }
 
-    console.log('onCardSelect', index, playerId)
+    console.log('onCardSelect options', options)
+    socketActions.selectCard(index, options)
 
     // const matchDetails = Engine.cardPlayed(matchId, index, options)
 
@@ -118,13 +117,7 @@ const Game = (props) => {
       return
     }
 
-    console.log('taking card..')
-
-    // const matchDetails = Engine.drawCard(matchId)
-
-    // if (matchDetails) {
-    //   setMatchDetails({ ...matchDetails })
-    // }
+    socketActions.drawCard()
   }
 
   const onPass = (playerId) => {
@@ -137,13 +130,7 @@ const Game = (props) => {
       return
     }
 
-    console.log('passing turn..')
-
-    // const matchDetails = Engine.passTurn(matchId)
-
-    // if (matchDetails) {
-    //   setMatchDetails({ ...matchDetails })
-    // }
+    socketActions.passTurn()
   }
 
   return (
