@@ -9,14 +9,8 @@ const remoteUrl = window.location.host.indexOf('playludo') >= 0 ? 'https://charm
 
 const socket = openSocket(remoteUrl)
 
-const initialize = ({ username, name, isHost, matchId = 31291 }) => {
+export const initialize = () => {
   return (dispatch, getState) => {
-    if (isHost) {
-      socket.emit('HOST_MATCH', { username, name })
-    } else {
-      socket.emit('JOIN_MATCH', { matchId, username, name })
-    }
-
     socket.on('connect', () => {
       console.warn('connected', socket.id, socket.disconnected, socket)
       dispatch({
@@ -25,11 +19,11 @@ const initialize = ({ username, name, isHost, matchId = 31291 }) => {
           status: networkStatus.CONNECTED
         }
       })
-      console.log('rejoining...', matchId)
-      socket.emit('JOIN_MATCH', {
-        username,
-        matchId
-      })
+      // console.log('rejoining...', matchId)
+      // socket.emit('JOIN_MATCH', {
+      //   username,
+      //   matchId
+      // })
     })
 
     socket.on('disconnect', (msg) => {
@@ -76,11 +70,20 @@ const initialize = ({ username, name, isHost, matchId = 31291 }) => {
       console.log('Hosted new match', matchId)
       // update match ID in local storage
       setValue('matchId', matchId)
+
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: { id: matchId }
+      })
     })
 
     // when current player (client) has joined
     socket.on('MATCH_JOINED', matchDetails => {
       console.log('Joined match', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
     })
 
     // when no match with matchId is found
@@ -107,11 +110,30 @@ const initialize = ({ username, name, isHost, matchId = 31291 }) => {
     // when match starts
     socket.on('MATCH_STARTED', matchDetails => {
       console.info('Match has started', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
     })
 
     // when a player leaves
     socket.on('PLAYER_LEFT', playerDetails => {
       console.log('a player has left', playerDetails)
+    })
+
+    // when user fails to rejoin match
+    socket.on('MATCH_REJOIN_FAILED', () => {
+      console.warn('Could not rejoin match')
+      setValue('matchId', null)
+    })
+
+    // when user rejoins match
+    socket.on('MATCH_REJOINED', matchDetails => {
+      console.info('Rejoined match', matchDetails)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
     })
 
     // game over
@@ -122,19 +144,31 @@ const initialize = ({ username, name, isHost, matchId = 31291 }) => {
   }
 }
 
-const startMatch = ({ matchId }) => {
+export const hostMatch = ({ username, name }) => {
+  return () => {
+    socket.emit('HOST_MATCH', { username, name })
+  }
+}
+
+export const joinMatch = ({ username, name, matchId }) => {
+  return () => {
+    socket.emit('JOIN_MATCH', { matchId, username, name })
+  }
+}
+
+export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
     socket.emit('START_MATCH', { matchId })
   }
 }
 
-const onSelectCard = card => {
-  socket.emit('CARD_SELECTED', card)
+export const rejoinMatch = ({ username, matchId }) => {
+  return (dispatch, getState) => {
+    socket.emit('REJOIN_MATCH', { username, matchId })
+  }
 }
 
-export {
-  initialize,
-  startMatch,
-  onSelectCard
+export const onSelectCard = card => {
+  socket.emit('CARD_SELECTED', card)
 }

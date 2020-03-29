@@ -8,10 +8,6 @@ class Player {
     this.isBot = false
     this.canDraw = true
     this.canPass = false
-
-    // client specific
-    this.c_isHost = false
-    this.c_isTurn = false
   }
 
   assignCards (cards) {

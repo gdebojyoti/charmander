@@ -6,13 +6,19 @@ window.__INITIALSTATE__ = {
   cells: {},
   profile: {
     username: '',
-    name: '',
-    isHost: false
+    name: ''
   },
   match: {
     id: null,
     status: matchStatus.PREMATCH,
-    currentTurn: ''
+    players: [],
+    currentTurn: '',
+    host: '',
+    discardPile: [],
+    order: [],
+    isReversed: false,
+    lastCardData: {},
+    cards: [] // player's cards
   },
   network: {
     status: networkStatus.CONNECTED,

@@ -5,21 +5,25 @@ import { bindActionCreators } from 'redux'
 import { getValue } from 'utilities/localStorage'
 import EditProfile from 'components/EditProfile'
 import HostOrClient from 'components/HostOrClient'
-import * as actions from 'actions/socket'
-import { updateProfile } from 'actions/profile'
+import * as socketActions from 'actions/socket'
+import * as profileActions from 'actions/profile'
 import Engine from 'services/Engine'
 import PlayerCard from 'components/PlayerCard'
 import Card from 'components/Card'
 import { getDetailsOfCurrentTurn } from 'utilities/general'
 import './style'
 
-const Game = ({ actions, updateProfile, profile }) => {
+const Game = ({ socketActions, profileActions, profile }) => {
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
   const [hostOrClient, setHostOrClient] = useState(0) // 0: none; 1: host; 2: client
 
   const [host, setHost] = useState(null)
   const [opponents, setOpponents] = useState([])
   const [matchDetails, setMatchDetails] = useState(null)
+
+  useEffect(() => {
+    socketActions.initialize()
+  }, [])
 
   // set isReady to true, if name & username exist
   useEffect(() => {
@@ -28,36 +32,45 @@ const Game = ({ actions, updateProfile, profile }) => {
     console.log('profileData', name, username)
     if (name && username) {
       setIsReady(true)
-      updateProfile({ name, username })
+      profileActions.updateProfile({ name, username })
+
+      // stuff
+      const matchId = getValue('matchId')
+      if (matchId) {
+        socketActions.rejoinMatch({ username, matchId })
+        console.error('in the middle of a game', matchId)
+        console.log('in the middle of a game', matchId)
+      }
     }
   }, [])
 
   // when isReady = true, open socket connection & host game
   useEffect(() => {
     if (hostOrClient) {
-      hostOrClient === 1 && updateProfile({ isHost: true })
-      console.log('profile', profile, profile.isHost)
+      const { username, name } = profile
+
+      if (hostOrClient === 1) {
+        socketActions.hostMatch({ username, name })
+      } else if (hostOrClient === 2) {
+        socketActions.joinMatch({ username, name })
+      }
+
       Engine.initialize()
-      actions.initialize({
-        ...profile,
-        isHost: hostOrClient === 1
-      })
     }
   }, [hostOrClient])
 
-  // if isReady = false, open form
+  // if isReady = false, open edit profile form
   if (!isReady) {
     const onReady = (profileData) => {
       setIsReady(true)
-      updateProfile(profileData)
+      profileActions.updateProfile(profileData)
     }
     return <EditProfile onReady={onReady} />
   }
 
-  // if hostOrClient is not set (0), open form
+  // if hostOrClient is not set (0), open form to select host vs join (as a client)
   if (!hostOrClient) {
     const onSelection = (index) => {
-      console.log('user chooses to be a', [null, 'host', 'client'][index])
       setHostOrClient(index)
     }
     return <HostOrClient onSelection={onSelection} />
@@ -66,7 +79,7 @@ const Game = ({ actions, updateProfile, profile }) => {
   const matchId = 31291
 
   const startMatch = () => {
-    actions.startMatch({
+    socketActions.startMatch({
       matchId
     })
 
@@ -206,12 +219,21 @@ const DummyZone = ({ matchId, startMatch }) => {
   )
 }
 
-const mapStateToProps = ({ profile, players, match: { id, status } = {} }) => ({ matchId: id, matchStatus: status, players, profile })
+const mapStateToProps = ({
+  profile,
+  players,
+  match: { id, status } = {}
+}) => ({
+  matchId: id,
+  matchStatus: status,
+  players,
+  profile
+})
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators(actions, dispatch),
-    updateProfile: bindActionCreators(updateProfile, dispatch)
+    socketActions: bindActionCreators(socketActions, dispatch),
+    profileActions: bindActionCreators(profileActions, dispatch)
   }
 }
 
