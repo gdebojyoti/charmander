@@ -19,11 +19,16 @@ export const initialize = () => {
           status: networkStatus.CONNECTED
         }
       })
-      // console.log('rejoining...', matchId)
-      // socket.emit('JOIN_MATCH', {
-      //   username,
-      //   matchId
-      // })
+
+      // rejoin match once user re-connects after getting disconnected
+      const {
+        match: { id: matchId } = {},
+        profile: { username } = {}
+      } = getState()
+      if (matchId && username) {
+        console.log('trying to rejoin...', matchId, username)
+        socket.emit('REJOIN_MATCH', { username, matchId })
+      }
     })
 
     socket.on('disconnect', (msg) => {
