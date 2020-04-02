@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import OpponentCard from 'components/Ui/OpponentCard'
 import Card from 'components/Ui/Card'
@@ -92,6 +92,7 @@ for (let i = 0; i < 10; i++) {
 }
 
 const Ui = () => {
+  const [showDrawnCard, setShowDrawnCard] = useState(false)
   const isPlayersTurn = true
   const playerDetailsClass = `player-details ${isPlayersTurn ? 'player-details--active' : ''}`
 
@@ -101,7 +102,7 @@ const Ui = () => {
         <OpponentCards data={opponents} />
 
         <div className='mid-section'>
-          <DrawCard />
+          <DrawCard onClick={() => setShowDrawnCard(true)} />
           <DiscardPile data={cards} />
         </div>
 
@@ -110,6 +111,8 @@ const Ui = () => {
         </div>
 
         <PlayerHand data={cards} />
+
+        {showDrawnCard && <DrawnCard data={cards[1]} />}
       </div>
 
       <Base />
@@ -123,7 +126,7 @@ const OpponentCards = ({ data }) => {
       {data.map((opponent, index) => {
         return (
           <div className='opponent-card-wrapper' key={index}>
-            <OpponentCard data={opponent} isTurn={index === 1} key={index} />
+            <OpponentCard data={opponent} isTurn={index === 1} disabled={index === 3} key={index} />
           </div>
         )
       })}
@@ -131,9 +134,9 @@ const OpponentCards = ({ data }) => {
   )
 }
 
-const DrawCard = () => {
+const DrawCard = ({ onClick }) => {
   return (
-    <div className='draw-card draw-card--active'>
+    <div className='draw-card draw-card--active' onClick={onClick}>
       Draw
     </div>
   )
@@ -171,6 +174,29 @@ const PlayerHand = ({ data }) => {
             </div>
           )
         })}
+      </div>
+    </div>
+  )
+}
+
+const DrawnCard = ({ data }) => {
+  const [isCardReady, setIsCardReady] = useState(false)
+  useEffect(() => {
+    setTimeout(() => {
+      setIsCardReady(true)
+    }, 1000)
+  }, [])
+  return (
+    <div className='drawn-card'>
+      <div className='drawn-card__banner'>
+        {isCardReady && (
+          <>
+            <button className='drawn-card__button'>Keep</button>
+            <Card data={data} />
+            <button className='drawn-card__button'>Play</button>
+          </>
+        )}
+        {!isCardReady && 'Drawing card...'}
       </div>
     </div>
   )

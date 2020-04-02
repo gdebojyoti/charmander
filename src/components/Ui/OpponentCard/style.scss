@@ -9,6 +9,12 @@
     animation: pulse 1s infinite;
   }
 
+  // if "disabled", hide card & disable interactions
+  &--disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   &__img {
     display: inline-block;
     width: 45px;
