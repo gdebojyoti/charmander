@@ -1,4 +1,11 @@
+$redGradient: #e52d27 linear-gradient(-45deg, #e52d27, #b31217);
+$blueGradient: #1488CC linear-gradient(-45deg, #1488CC, #2B32B2);
+$yellowGradient: #ffe259 linear-gradient(-45deg, #ffe259, #ffa751);
+$greenGradient: #56ab2f linear-gradient(-45deg, #56ab2f, #a8e063);
+$blackGradient: #000 linear-gradient(-45deg, #000000, #434343);
+
 .card {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,25 +17,107 @@
   border-radius: 4px;
   box-shadow: 0 0 3px rgba(0,0,0,.54);
 
-  // https://uigradients.com/#LoveandLiberty
-
   &--red {
-    background: #e52d27 linear-gradient(-45deg, #e52d27, #b31217);
+    background: $redGradient;
   }
   
   &--blue {
-    background: #1488CC linear-gradient(-45deg, #1488CC, #2B32B2);
+    background: $blueGradient;
   }
   
   &--yellow {
-    background: #ffe259 linear-gradient(-45deg, #ffe259, #ffa751);
+    background: $yellowGradient;
   }
   
   &--green {
-    background: #56ab2f linear-gradient(-45deg, #56ab2f, #a8e063);
+    background: $greenGradient;
   }
   
-  &--black {
-    background: #000 linear-gradient(-45deg, #000000, #434343);
+  &--wild {
+    background: $blackGradient;
+  }
+
+  &__prefix {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  &__wild-circle {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    flex-wrap: wrap;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      background: $blackGradient;
+      border-radius: 50%;
+    }
+  }
+
+  &__wild-quadrant {
+    width: calc(50% - 1px);
+    height: calc(50% - 1px);
+    background-color: #fff;
+
+    &:nth-of-type(1) {
+      border-top-left-radius: 100%;
+      background: $greenGradient;
+    }
+    &:nth-of-type(2) {
+      border-top-right-radius: 100%;
+      background: $blueGradient;
+    }
+    &:nth-of-type(3) {
+      border-bottom-left-radius: 100%;
+      background: $redGradient;
+    }
+    &:nth-of-type(4) {
+      border-bottom-right-radius: 100%;
+      background: $yellowGradient;
+    }
+  }
+
+  &__wild-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  &__symbol {
+    width: 50px;
+    height: 50px;
+  }
+  &__symbol-prefix {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 13px;
+    height: 13px;
+  }
+  &__symbol, &__symbol-prefix {
+    background: center / contain no-repeat;
+    &--skip {
+      background-image: url('../../../assets/skip.png');
+    }
+    &--reverse {
+      background-image: url('../../../assets/reverse.png');
+    }
   }
 }

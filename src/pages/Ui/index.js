@@ -7,25 +7,25 @@ import './style'
 
 const opponents = [
   {
-    name: 'Dexter Grindelwald',
+    name: 'Harry Potter',
     img: 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
     isOnline: true,
     cardCount: 6
   },
   {
-    name: 'Dexter Grindelwald',
+    name: 'Hermione Granger',
     img: 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
     isOnline: true,
     cardCount: 19
   },
   {
-    name: 'Dexter Grindelwald',
+    name: 'Ron Weasley',
     img: 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
     isOnline: true,
     cardCount: 1
   },
   {
-    name: 'Dexter Grindelwald',
+    name: 'Tom Riddle',
     img: 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
     isOnline: true,
     cardCount: 3
@@ -39,9 +39,9 @@ const cards = [
     color: 'RED'
   },
   {
-    name: 2,
+    name: 9,
     type: 'NUMBER',
-    color: 'RED'
+    color: 'GREEN'
   },
   {
     name: 3,
@@ -49,8 +49,8 @@ const cards = [
     color: 'YELLOW'
   },
   {
-    name: 9,
-    type: 'NUMBER',
+    name: 'WILD',
+    type: 'ACTION',
     color: 'BLACK'
   },
   {
@@ -64,19 +64,29 @@ const cards = [
     color: 'BLUE'
   },
   {
-    name: 3,
-    type: 'NUMBER',
+    name: 'SKIP',
+    type: 'ACTION',
     color: 'YELLOW'
   },
   {
-    name: 9,
-    type: 'NUMBER',
+    name: 'REVERSE',
+    type: 'ACTION',
+    color: 'YELLOW'
+  },
+  {
+    name: 'DRAW_TWO',
+    type: 'ACTION',
+    color: 'YELLOW'
+  },
+  {
+    name: 'WILD_DRAW_FOUR',
+    type: 'ACTION',
     color: 'BLACK'
   }
 ]
 
 const angles = []
-const angleLimit = 10
+const angleLimit = 15
 for (let i = 0; i < 10; i++) {
   angles.push(Math.random(1) * angleLimit * 2 - angleLimit)
 }
@@ -169,7 +179,7 @@ const PlayerHand = ({ data }) => {
 const Base = () => {
   return (
     <div className='base'>
-      More stuff coming soon...
+      Under construction...
     </div>
   )
 }
