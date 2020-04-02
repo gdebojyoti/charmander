@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
 import configureStore from 'store/configureStore'
-import Game from 'pages/Game'
+import Game from 'pages/Ui'
 
 const store = configureStore()
 

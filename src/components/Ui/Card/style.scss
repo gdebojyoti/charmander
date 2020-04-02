@@ -1,0 +1,34 @@
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 150px;
+  font-size: 50px;
+  color: #fff;
+  font-weight: 200;
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0,0,0,.54);
+
+  // https://uigradients.com/#LoveandLiberty
+
+  &--red {
+    background: #e52d27 linear-gradient(-45deg, #e52d27, #b31217);
+  }
+  
+  &--blue {
+    background: #1488CC linear-gradient(-45deg, #1488CC, #2B32B2);
+  }
+  
+  &--yellow {
+    background: #ffe259 linear-gradient(-45deg, #ffe259, #ffa751);
+  }
+  
+  &--green {
+    background: #56ab2f linear-gradient(-45deg, #56ab2f, #a8e063);
+  }
+  
+  &--black {
+    background: #000 linear-gradient(-45deg, #000000, #434343);
+  }
+}
