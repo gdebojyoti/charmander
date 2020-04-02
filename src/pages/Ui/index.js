@@ -82,11 +82,23 @@ for (let i = 0; i < 10; i++) {
 }
 
 const Ui = () => {
+  const isPlayersTurn = true
+  const playerDetailsClass = `player-details ${isPlayersTurn ? 'player-details--active' : ''}`
+
   return (
     <div className='device'>
       <div className='arena'>
         <OpponentCards data={opponents} />
-        <CardStack data={cards} />
+
+        <div className='mid-section'>
+          <DrawCard />
+          <DiscardPile data={cards} />
+        </div>
+
+        <div className={playerDetailsClass}>
+          <OpponentCard data={{ ...opponents[0], name: 'You' }} hideCardCount />
+        </div>
+
         <PlayerHand data={cards} />
       </div>
 
@@ -109,15 +121,28 @@ const OpponentCards = ({ data }) => {
   )
 }
 
-const CardStack = ({ data }) => {
+const DrawCard = () => {
   return (
-    <div className='card-stack'>
-      {data.map((card, index) => {
-        const styles = {
-          transform: `rotate(${angles[index % angles.length]}deg)`
-        }
-        return <Card data={card} style={styles} key={index} />
-      })}
+    <div className='draw-card draw-card--active'>
+      Draw
+    </div>
+  )
+}
+
+const DiscardPile = ({ data }) => {
+  return (
+    <div className='discard-pile'>
+      <div className='discard-pile__direction-container discard-pile__direction-container--reversed'>
+        <div className='discard-pile__direction' />
+      </div>
+      <div className='discard-pile__card-container'>
+        {data.map((card, index) => {
+          const styles = {
+            transform: `rotate(${angles[index % angles.length]}deg)`
+          }
+          return <Card data={card} style={styles} key={index} />
+        })}
+      </div>
     </div>
   )
 }

@@ -26,21 +26,20 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 360px;
-  max-height: 640px;
+  max-width: 480px;
+  max-height: 900px;
+  // overflow: hidden;
   background-image: linear-gradient(-45deg, #4facfe 0%, #00f2fe 100%);
-  // background: linear-gradient(-45deg, #efefbb, #d4d3dd);
-  // background: linear-gradient(-45deg, #ffefba, #ffffff);
-  background: linear-gradient(-45deg, #e0eafc, #cfdef3);
+  background: linear-gradient(-45deg, #ffefba, #ffffff);
   // background: linear-gradient(-45deg, #ece9e6, #ffffff);
-  background: linear-gradient(-45deg, #abbaab, #ffffff);
+  // background: linear-gradient(-45deg, #abbaab, #ffffff);
 }
 
 .opponent-cards {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 340px;
+  width: calc(100% - 20px);
   margin: 20px auto 0;
   padding-top: 15px;
 }
@@ -57,19 +56,106 @@ body {
   }
 }
 
-.card-stack {
-  width: 100px;
-  height: 150px;
-  margin: 20px auto 0;
+.mid-section {
+  position: relative;
+  margin: -65px 0 -35px;
+  padding: 80px 0;
+}
+
+.draw-card {
+  position: absolute;
+  left: 10px;
+  top: 40%;
+  z-index: 1;
+  transform: rotate(-30deg);
+  padding: 0 6px;
+  border: solid 2px #fff;
+  font-size: 12px;
+  line-height: 28px;
+  color: #fff;
+  font-weight: 500;
+  background-color: #302b63;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 4px;
+
+  &--active {
+    animation: rotatePulse 1s infinite;
+  }
+}
+
+@keyframes rotatePulse {
+  0% {
+    transform: rotate(-30deg) scale(1);
+  }
+  15% {
+    transform: rotate(-30deg) scale(1.07);
+  }
+  100% {
+    transform: rotate(-30deg) scale(1);
+  }
+}
+
+.discard-pile {
+  &__direction-container {
+    position: absolute;
+    top: 0;
+    transform: scaleX(-1);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    opacity: 0.1;
+
+    &--reversed {
+      transform: none;
+    }
+  }
+  &__direction {
+    height: 100%;
+    background: url('../../assets/refresh.png') center / 250px no-repeat;
+    animation: spin 10s linear infinite;
+  }
+
+  &__card-container {
+    width: 100px;
+    height: 150px;
+    margin: 0 auto;
+  }
   
   .card {
     position: absolute;
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.player-details {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+
+  &--active {
+    .opponent-card {
+      transform: scale(1.2);
+    }
+  }
+  
+  .opponent-card {
+    // width: 100%;
+    transition: transform .2s;
+  }
+}
+
 .player-hand {
   height: 165px;
-  margin-top: 20px;
+  margin-top: 5px;
   overflow: hidden;
 
   &__main {
@@ -108,6 +194,7 @@ body {
 .base {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   line-height: 40px;
   text-align: center;
