@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
+import HostOrJoin from 'components/Ui/HostOrJoin'
 import OpponentCard from 'components/Ui/OpponentCard'
 import Card from 'components/Ui/Card'
 
@@ -92,30 +93,53 @@ for (let i = 0; i < 10; i++) {
 }
 
 const Ui = () => {
-  const [showDrawnCard, setShowDrawnCard] = useState(false)
-  const isPlayersTurn = true
-  const playerDetailsClass = `player-details ${isPlayersTurn ? 'player-details--active' : ''}`
+  const [showHostJoin, setShowHostJoin] = useState(true)
+  const [showGame, setShowGame] = useState(false)
+
+  const onGameHost = () => {
+    console.log('Hosting new game')
+    setShowGame(true)
+    setShowHostJoin(false)
+  }
+  const onGameJoin = code => {
+    console.log('Joining game with code', code)
+    setShowGame(true)
+    setShowHostJoin(false)
+  }
 
   return (
     <div className='device'>
-      <div className='arena'>
-        <OpponentCards data={opponents} />
-
-        <div className='mid-section'>
-          <DrawCard onClick={() => setShowDrawnCard(true)} />
-          <DiscardPile data={cards} />
-        </div>
-
-        <div className={playerDetailsClass}>
-          <OpponentCard data={{ ...opponents[0], name: 'You' }} hideCardCount />
-        </div>
-
-        <PlayerHand data={cards} />
-
-        {showDrawnCard && <DrawnCard data={cards[1]} />}
-      </div>
+      {showHostJoin && <HostOrJoin isShowing={showHostJoin} onHost={onGameHost} onJoin={onGameJoin} />}
+      {showGame && <Game isShowing={showGame} />}
 
       <Base />
+    </div>
+  )
+}
+
+const Game = ({ isShowing }) => {
+  const [showDrawnCard, setShowDrawnCard] = useState(false)
+  const isPlayersTurn = true
+
+  const arenaClass = `arena ${isShowing ? 'arena--visible' : ''}`
+  const playerDetailsClass = `player-details ${isPlayersTurn ? 'player-details--active' : ''}`
+
+  return (
+    <div className={arenaClass}>
+      <OpponentCards data={opponents} />
+
+      <div className='mid-section'>
+        <DrawCard onClick={() => setShowDrawnCard(true)} />
+        <DiscardPile data={cards} />
+      </div>
+
+      <div className={playerDetailsClass}>
+        <OpponentCard data={{ ...opponents[0], name: 'You' }} hideCardCount />
+      </div>
+
+      <PlayerHand data={cards} />
+
+      {showDrawnCard && <DrawnCard data={cards[1]} />}
     </div>
   )
 }

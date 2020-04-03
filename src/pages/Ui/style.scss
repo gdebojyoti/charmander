@@ -32,18 +32,18 @@ body {
   max-width: 480px;
   max-height: 900px;
   background: linear-gradient(-45deg, #4facfe 0%, #00f2fe 100%);
-  background: linear-gradient(-45deg, #ffefba, #ffffff);
+  background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
   // background: linear-gradient(-45deg, #ece9e6, #ffffff);
   // background: linear-gradient(-45deg, #abbaab, #ffffff);
 }
 
 .arena {
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  background: $primaryBackgroundImage;
 }
 
 .opponent-cards {
