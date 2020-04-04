@@ -2,7 +2,7 @@ import React from 'react'
 
 import './style'
 
-const OpponentCard = ({ data, isTurn, disabled = false, hideCardCount = false }) => {
+const PlayerCard = ({ data, isTurn, disabled = false, hideCardCount = false }) => {
   // TODO: fix data for img, isOnline & cardCount
   const {
     name,
@@ -25,4 +25,4 @@ const OpponentCard = ({ data, isTurn, disabled = false, hideCardCount = false })
   )
 }
 
-export default OpponentCard
+export default PlayerCard

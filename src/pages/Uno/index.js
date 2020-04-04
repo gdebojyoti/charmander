@@ -11,8 +11,6 @@ import * as socketActions from 'actions/socket'
 import * as profileActions from 'actions/profile'
 
 // import Engine from 'services/Engine'
-// import PlayerCard from 'components/PlayerCard'
-// import Card from 'components/Card'
 
 const Uno = (props) => {
   const { match, profile, socketActions, profileActions } = props

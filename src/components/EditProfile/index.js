@@ -1,4 +1,4 @@
-// TODO: Delete this
+// TODO: Re-do UI
 
 import React, { useState, useEffect } from 'react'
 

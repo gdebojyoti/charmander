@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import PlayerCard from 'components/Ui/OpponentCard'
+import PlayerCard from 'components/Ui/PlayerCard'
 import DrawCard from 'components/Ui/DrawCard'
 import DiscardPile from 'components/Ui/DiscardPile'
 import PlayerHand from 'components/Ui/PlayerHand'
@@ -90,7 +90,7 @@ const Arena = (props) => {
 
   return (
     <div className='arena'>
-      <OpponentCards data={opponents} currentTurn={currentTurn} />
+      <Opponents data={opponents} currentTurn={currentTurn} />
 
       <div className='mid-section'>
         {/* TODO: Call socket method on click */}
@@ -126,7 +126,7 @@ const Arena = (props) => {
   )
 }
 
-const OpponentCards = ({ data, currentTurn }) => {
+const Opponents = ({ data, currentTurn }) => {
   return (
     <div className='opponent-cards'>
       {data.map((opponent, index) => {
