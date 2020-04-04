@@ -119,9 +119,6 @@ const Arena = (props) => {
       )}
 
       {status !== 'LIVE' && <div>Status: {status}</div>}
-
-      {/* {host && <Player data={host} onCardSelect={onCardSelect} onTake={onTake} onPass={onPass} />}
-      {!!opponents.length && <Opponents players={opponents} onCardSelect={onCardSelect} onTake={onTake} onPass={onPass} />} */}
     </div>
   )
 }
