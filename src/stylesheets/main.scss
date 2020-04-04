@@ -5,6 +5,8 @@ $primaryBackgroundImage: url('../assets/bright-squares.png');
   margin: 0;
   padding: 0;
   font: inherit;
+  user-select: none;
+  outline: none;
 }
 
 html, body, .app {

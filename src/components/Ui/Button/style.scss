@@ -1,0 +1,16 @@
+@import 'stylesheets/variables';
+
+.button {
+  padding: 0 12px;
+  border: solid 1px #333;
+  border: none;
+  line-height: 40px;
+  font-weight: 500;
+  color: #fff;
+  background: $orangeGradient;
+  border-radius: 5px;
+
+  &--disabled {
+    background: #bdc3c7;
+  }
+}

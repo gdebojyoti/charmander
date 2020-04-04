@@ -1,6 +1,7 @@
 import openSocket from 'socket.io-client'
 
 import { setValue } from 'utilities/localStorage'
+import matchStatus from 'constants/matchStatus'
 import networkStatus from 'constants/networkStatus'
 
 // use heroku link only on production ("prod=true" in URL) only
@@ -76,9 +77,18 @@ export const initialize = () => {
       // update match ID in local storage
       setValue('matchId', matchId)
 
+      const {
+        profile: { name, username } = {}
+      } = getState()
+
       dispatch({
         type: 'UPDATE_MATCH_DETAILS',
-        payload: { id: matchId }
+        payload: {
+          id: matchId,
+          status: matchStatus.PREMATCH,
+          players: [{ name, username }],
+          host: username
+        }
       })
     })
 

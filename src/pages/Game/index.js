@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Arena from 'components/Arena'
+import Lobby from 'components/Lobby'
 import EditProfile from 'components/EditProfile' // change
 import HostOrJoin from 'components/HostOrJoin'
+import Arena from 'components/Arena'
 
+import matchStatus from 'constants/matchStatus'
 import { getValue } from 'utilities/localStorage'
 import * as socketActions from 'actions/socket'
 import * as profileActions from 'actions/profile'
@@ -70,6 +72,16 @@ const Uno = (props) => {
       setShowChoiceModal(false)
     }
     return <HostOrJoin onHost={onHost} onJoin={onJoin} />
+  }
+
+  if (status === matchStatus.PREMATCH) {
+    return (
+      <Lobby
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
   }
 
   return (
