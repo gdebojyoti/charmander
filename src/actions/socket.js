@@ -5,7 +5,7 @@ import networkStatus from 'constants/networkStatus'
 
 // use heroku link only on production ("prod=true" in URL) only
 // const remoteUrl = window.location.search.indexOf('prod') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
-const remoteUrl = window.location.host.indexOf('playludo') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
+const remoteUrl = window.location.host.indexOf('uno') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
 
 const socket = openSocket(remoteUrl)
 
