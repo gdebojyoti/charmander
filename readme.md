@@ -10,6 +10,7 @@ The #1 Card Game Web App
 * [x] UI
 
 #### Phase 2 features
+* [ ] Prevent screen lock (NoSleep.js)
 * [ ] Color indication after wild card has been played
 * [ ] UI for edit profile, color picker, game winner
 * [ ] Ability to leave game
