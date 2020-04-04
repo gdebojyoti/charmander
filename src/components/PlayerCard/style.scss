@@ -1,3 +1,74 @@
-.cards {
-  display: flex;
+.opponent-card {
+  position: relative;
+  // display: flex;
+  // align-items: center;
+  width: 75px;
+  text-align: center;
+
+  &--active {
+    animation: pulse 1s infinite;
+  }
+
+  // if "disabled", hide card & disable interactions
+  &--disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__img {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border: solid 3px red;
+    object-fit: cover;
+    background: #6f0000 linear-gradient(-45deg, #200122, #6f0000);
+    border-radius: 4px;
+    box-shadow: 0 0 2px rgba(0,0,0,.54), inset 0 0 2px rgba(0,0,0,.54);
+
+    &--online {
+      border-color: palegreen;
+    }
+  }
+  
+  &__name {
+    margin-top: 5px;
+    line-height: 16px;
+    font-weight: 500;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  
+  &__card-count {
+    position: absolute;
+    top: -15px;
+    right: 0;
+    width: 20px;
+    margin-top: 4px;
+    border: solid 2px #fff;
+    font-size: 12px;
+    line-height: 24px;
+    color: #fff;
+    background: #8e2de2 linear-gradient(-45deg, #8e2de2, #4a00e0);
+    text-align: center;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0,0,0,.54);
+    
+    &--warn {
+      background: #ffe259 linear-gradient(-45deg, #ffe259, #ffa751);
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.07);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

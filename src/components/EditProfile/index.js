@@ -1,3 +1,5 @@
+// TODO: Re-do UI
+
 import React, { useState, useEffect } from 'react'
 
 import { getValue, setValue } from 'utilities/localStorage'

@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const sourceDirectory = path.resolve(__dirname, '../src')
 const publicDirectory = path.resolve(__dirname, '../public')
@@ -26,6 +27,7 @@ const config = {
       reducers: path.resolve(sourceDirectory, 'reducers'),
       services: path.resolve(sourceDirectory, 'services'),
       store: path.resolve(sourceDirectory, 'store'),
+      stylesheets: path.resolve(sourceDirectory, 'stylesheets'),
       utilities: path.resolve(sourceDirectory, 'utilities')
     }
   },
@@ -49,6 +51,10 @@ const config = {
           'css-loader',
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader'
       }
     ]
   },
@@ -62,7 +68,10 @@ const config = {
     new MiniCssExtractPlugin({
       filename: 'css-[name].[hash:8].css',
       chunkFilename: 'csschunk-[name].bundle.css'
-    })
+    }),
+    new CopyPlugin([
+      { from: `${sourceDirectory}/assets`, to: `${publicDirectory}/assets` }
+    ])
   ]
 }
 

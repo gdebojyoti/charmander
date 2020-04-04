@@ -1,0 +1,37 @@
+$primaryBackgroundImage: url('../assets/bright-squares.png');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+html, body, .app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+}
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.device {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  max-height: 900px;
+  background: linear-gradient(-45deg, #4facfe 0%, #00f2fe 100%);
+  background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
+  // background: linear-gradient(-45deg, #ece9e6, #ffffff);
+  // background: linear-gradient(-45deg, #abbaab, #ffffff);
+}
