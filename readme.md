@@ -5,11 +5,11 @@ The #1 Card Game Web App
 ## Roadmap
 
 * [x] Base game
-* [ ] Socket integration
-* [ ] UI
+* [x] Socket integration
+* [x] UI
 * [ ] Post game (distribute points; start new game)
+* [ ] FB, Google Login; invites
 * [ ] Emoji, chat, taunts
-* [ ] FB, Google Login
 * [ ] Leaderboard
 * [ ] Timer
 * [ ] New cards, leagues
