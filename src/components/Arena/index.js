@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import PlayerCard from 'components/Ui/PlayerCard'
-import DrawCard from 'components/Ui/DrawCard'
-import DiscardPile from 'components/Ui/DiscardPile'
-import PlayerHand from 'components/Ui/PlayerHand'
-import DrawnCard from 'components/Ui/DrawnCard'
-import ColorPicker from 'components/Ui/ColorPicker'
+import PlayerCard from 'components/PlayerCard'
+import DrawCard from 'components/DrawCard'
+import DiscardPile from 'components/DiscardPile'
+import PlayerHand from 'components/PlayerHand'
+import DrawnCard from 'components/DrawnCard'
+import ColorPicker from 'components/ColorPicker'
 
 import './style'
 

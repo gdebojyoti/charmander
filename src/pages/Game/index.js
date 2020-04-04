@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Arena from 'components/Ui/Arena'
+import Arena from 'components/Arena'
 import EditProfile from 'components/EditProfile' // change
-import HostOrJoin from 'components/Ui/HostOrJoin'
+import HostOrJoin from 'components/HostOrJoin'
 
 import { getValue } from 'utilities/localStorage'
 import * as socketActions from 'actions/socket'

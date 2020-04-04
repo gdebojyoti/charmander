@@ -114,10 +114,10 @@ $blackGradient: #000 linear-gradient(-45deg, #000000, #434343);
   &__symbol, &__symbol-prefix {
     background: center / contain no-repeat;
     &--skip {
-      background-image: url('../../../assets/skip.png');
+      background-image: url('../../assets/skip.png');
     }
     &--reverse {
-      background-image: url('../../../assets/reverse.png');
+      background-image: url('../../assets/reverse.png');
     }
   }
 }
