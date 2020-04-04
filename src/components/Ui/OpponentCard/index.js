@@ -3,7 +3,14 @@ import React from 'react'
 import './style'
 
 const OpponentCard = ({ data, isTurn, disabled = false, hideCardCount = false }) => {
-  const { name, img, isOnline, cardCount } = data
+  // TODO: fix data for img, isOnline & cardCount
+  const {
+    name,
+    img = 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
+    isOnline = true,
+    cards = [],
+    cardCount = cards.length
+  } = data
 
   const mainClass = `opponent-card ${isTurn ? 'opponent-card--active' : ''} ${disabled ? 'opponent-card--disabled' : ''}`
   const imgClass = `opponent-card__img ${isOnline ? 'opponent-card__img--online' : ''}`

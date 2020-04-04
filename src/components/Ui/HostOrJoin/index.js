@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import './style'
 
-const HostOrJoin = ({ isShowing, onHost, onJoin: onJoinProp }) => {
+const HostOrJoin = ({ onHost, onJoin: onJoinProp }) => {
   const [showInput, setShowInput] = useState(false)
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState('31291')
 
   const onChange = e => {
     setCode(e.target.value)
@@ -14,10 +14,8 @@ const HostOrJoin = ({ isShowing, onHost, onJoin: onJoinProp }) => {
     code && onJoinProp(code)
   }
 
-  const mainClass = `host-join ${isShowing ? 'host-join--visible' : ''}`
-
   return (
-    <div className={mainClass}>
+    <div className='host-join'>
       {!showInput && (
         <>
           <button className='host-join__button' onClick={onHost}>Host Game</button>

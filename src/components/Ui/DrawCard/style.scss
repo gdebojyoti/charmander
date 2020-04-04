@@ -1,0 +1,33 @@
+.draw-card {
+  position: absolute;
+  left: 10px;
+  top: 40%;
+  z-index: 1;
+  transform: rotate(-30deg);
+  padding: 0 6px;
+  border: solid 2px #fff;
+  font-size: 12px;
+  line-height: 28px;
+  color: #fff;
+  font-weight: 500;
+  background-color: #302b63;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 4px;
+
+  &--active {
+    animation: rotatePulse 1s infinite;
+  }
+}
+
+@keyframes rotatePulse {
+  0% {
+    transform: rotate(-30deg) scale(1);
+  }
+  15% {
+    transform: rotate(-30deg) scale(1.07);
+  }
+  100% {
+    transform: rotate(-30deg) scale(1);
+  }
+}

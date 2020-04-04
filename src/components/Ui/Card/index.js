@@ -13,7 +13,7 @@ const Card = ({ data, style }) => {
   color === 'GREEN' && cardClass.push('card--green')
 
   if (type === 'NUMBER') {
-    return <NumericCard className={cardClass.join(' ')} name={name} />
+    return <NumericCard className={cardClass.join(' ')} style={style} name={name} />
   }
 
   if (type === 'ACTION') {
@@ -28,15 +28,15 @@ const Card = ({ data, style }) => {
     }
 
     if (name === 'DRAW_TWO') {
-      return <NumericCard className={cardClass.join(' ')} name='+2' />
+      return <NumericCard className={cardClass.join(' ')} style={style} name='+2' />
     }
 
     if (name === 'SKIP') {
-      return <SymbolCard className={cardClass.join(' ')} symbol='skip' />
+      return <SymbolCard className={cardClass.join(' ')} style={style} symbol='skip' />
     }
 
     if (name === 'REVERSE') {
-      return <SymbolCard className={cardClass.join(' ')} symbol='reverse' />
+      return <SymbolCard className={cardClass.join(' ')} style={style} symbol='reverse' />
     }
   }
 

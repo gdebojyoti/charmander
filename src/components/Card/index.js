@@ -1,3 +1,5 @@
+// TODO: Delete this
+
 import React, { useState } from 'react'
 
 const Card = ({ data: { type, name, color } = {}, onCardSelect }) => {

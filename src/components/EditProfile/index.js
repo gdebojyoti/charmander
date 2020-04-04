@@ -1,3 +1,5 @@
+// TODO: Delete this
+
 import React, { useState, useEffect } from 'react'
 
 import { getValue, setValue } from 'utilities/localStorage'

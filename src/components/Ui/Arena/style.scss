@@ -1,0 +1,52 @@
+.arena {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.opponent-cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+.opponent-card-wrapper {
+  &:nth-of-type(1), &:nth-of-type(4) {
+    margin-top: 70px;
+  }
+  &:nth-of-type(2) {
+    margin-left: -10px;
+  }
+  &:nth-of-type(3) {
+    margin-right: -10px;
+  }
+}
+
+.mid-section {
+  position: relative;
+  margin: -65px 0 -35px;
+  padding: 80px 0;
+}
+
+.player-details {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+
+  &--active {
+    .opponent-card {
+      transform: scale(1.4);
+    }
+  }
+  
+  .opponent-card {
+    // width: 100%;
+    transition: transform .2s;
+  }
+}

@@ -27,6 +27,7 @@ const config = {
       reducers: path.resolve(sourceDirectory, 'reducers'),
       services: path.resolve(sourceDirectory, 'services'),
       store: path.resolve(sourceDirectory, 'store'),
+      stylesheets: path.resolve(sourceDirectory, 'stylesheets'),
       utilities: path.resolve(sourceDirectory, 'utilities')
     }
   },
