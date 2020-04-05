@@ -186,9 +186,13 @@ export const initialize = () => {
     })
 
     // game over
-    socket.on('GAME_OVER', ({ winner }) => {
-      console.log(`Winner Winner Chicken Dinner! Congrats ${winner}`)
-      window.alert(`Winner Winner Chicken Dinner! Congrats ${winner}`)
+    socket.on('GAME_OVER', matchDetails => {
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: {
+          status: matchStatus.COMPLETED
+        }
+      })
     })
   }
 }

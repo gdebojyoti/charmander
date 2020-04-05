@@ -48,7 +48,7 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
 }
 
 const PlayerTab = ({ data, isHost }) => {
-  const { name, img = 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png' } = data
+  const { name, img = 'https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png' } = data
   return (
     <div className='player-tab'>
       <img className='player-tab__img' src={img} />

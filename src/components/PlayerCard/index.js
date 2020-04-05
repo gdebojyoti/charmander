@@ -6,7 +6,7 @@ const PlayerCard = ({ data, isTurn, disabled = false, hideCardCount = false }) =
   // TODO: fix data for img, isOnline & cardCount
   const {
     name,
-    img = 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
+    img = 'https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png',
     isOnline = true,
     cards = [],
     cardCount = cards.length

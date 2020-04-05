@@ -6,6 +6,7 @@ import Lobby from 'components/Lobby'
 import EditProfile from 'components/EditProfile' // change
 import HostOrJoin from 'components/HostOrJoin'
 import Arena from 'components/Arena'
+import PostGame from 'components/PostGame'
 
 import matchStatus from 'constants/matchStatus'
 import { getValue } from 'utilities/localStorage'
@@ -74,6 +75,7 @@ const Uno = (props) => {
     return <HostOrJoin onHost={onHost} onJoin={onJoin} />
   }
 
+  // before match starts
   if (status === matchStatus.PREMATCH) {
     return (
       <Lobby
@@ -84,6 +86,7 @@ const Uno = (props) => {
     )
   }
 
+  // during match
   if (status === matchStatus.LIVE) {
     return (
       <Arena
@@ -94,7 +97,17 @@ const Uno = (props) => {
     )
   }
 
-  // TODO: render match complete scenario
+  // on match complete
+  if (status === matchStatus.COMPLETED) {
+    return (
+      <PostGame
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
   return null
 }
 
