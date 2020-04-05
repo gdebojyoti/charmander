@@ -84,13 +84,17 @@ const Uno = (props) => {
     )
   }
 
-  return (
-    <Arena
-      socketActions={socketActions}
-      match={match}
-      profile={profile}
-    />
-  )
+  if (status === matchStatus.LIVE) {
+    return (
+      <Arena
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
+  return null
 }
 
 const mapStateToProps = ({
