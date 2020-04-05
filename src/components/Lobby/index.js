@@ -1,5 +1,6 @@
 import React from 'react'
 
+import BasicPage from 'components/Ui/BasicPage'
 import Button from 'components/Ui/Button'
 
 import './style'
@@ -14,16 +15,14 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
   }
 
   return (
-    <div className='lobby'>
-      <h1 className='lobby__heading'>Lobby</h1>
-
+    <BasicPage heading='Lobby' className='lobby'>
       <div className='player-list'>
         {players.map((player, index) => <PlayerTab data={player} isHost={host === player.username} key={index} />)}
       </div>
 
       {host === username && <Button onClick={startMatch}>Start game</Button>}
       {host !== username && <Button disabled>Waiting for host</Button>}
-    </div>
+    </BasicPage>
   )
 }
 

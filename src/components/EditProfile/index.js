@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect } from 'react'
 
+import BasicPage from 'components/Ui/BasicPage'
+import Button from 'components/Ui/Button'
+
 import { getValue, setValue } from 'utilities/localStorage'
+
+import './style'
 
 let newUsername = ''
 
@@ -29,14 +34,25 @@ const EditProfile = ({ onReady }) => {
     onReady(profileData)
   }
 
-  const ctaText = 'Save details'
+  const ctaText = 'Save & Continue'
+
+  // const subheading = (
+  //   <span>
+  //     Enter a name and that's it.
+  //     <br />
+  //     You can always change it later
+  //   </span>
+  // )
 
   return (
-    <div>
-      Editing profile...
-      <input type='text' value={name} onChange={updateName} autoFocus />
-      <button onClick={onSave} disabled={!name}>{ctaText}</button>
-    </div>
+    <BasicPage
+      heading='Getting Started'
+      subheading="Enter a name and that's it. You can always change it later"
+      className='edit-profile'
+    >
+      <input type='text' className='edit-profile__input' value={name} onChange={updateName} autoFocus placeholder='Your name' />
+      <Button onClick={onSave} disabled={!name}>{ctaText}</Button>
+    </BasicPage>
   )
 }
 
