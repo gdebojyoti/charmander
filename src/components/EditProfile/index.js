@@ -22,27 +22,19 @@ const EditProfile = ({ onReady }) => {
   }, [])
 
   const updateName = e => {
-    setName(e.target.value.trim())
+    setName(e.target.value)
   }
 
   const onSave = () => {
     const profileData = {
       name,
-      username: newUsername
+      username: newUsername.trim()
     }
     setValue('profile', profileData)
     onReady(profileData)
   }
 
   const ctaText = 'Save & Continue'
-
-  // const subheading = (
-  //   <span>
-  //     Enter a name and that's it.
-  //     <br />
-  //     You can always change it later
-  //   </span>
-  // )
 
   return (
     <BasicPage
