@@ -107,6 +107,14 @@ export const initialize = () => {
     socket.on('MATCH_JOIN_FAILED', () => {
       console.warn('Could not join match')
       setValue('matchId', null)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not join match'
+        }
+      })
     })
 
     // TODO: optimize payload
@@ -123,6 +131,14 @@ export const initialize = () => {
     // when match start fails
     socket.on('MATCH_START_FAILED', reason => {
       console.warn('Could not start match', reason)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not start match'
+        }
+      })
     })
 
     // when match starts
@@ -143,6 +159,14 @@ export const initialize = () => {
     socket.on('MATCH_REJOIN_FAILED', () => {
       console.warn('Could not rejoin match')
       setValue('matchId', null)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not rejoin match'
+        }
+      })
     })
 
     // when user rejoins match
@@ -157,6 +181,14 @@ export const initialize = () => {
     // when invalid card is selected
     socket.on('CANNOT_PLAY_CARD', reason => {
       console.info('Cannot play card', reason)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: `Cannot play that card: ${reason}`
+        }
+      })
     })
 
     // when a card is played

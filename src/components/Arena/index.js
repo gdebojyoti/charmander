@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
 import PlayerCard from 'components/PlayerCard'
 import DrawCard from 'components/DrawCard'
@@ -10,7 +11,7 @@ import ColorPicker from 'components/ColorPicker'
 import './style'
 
 const Arena = (props) => {
-  const { socketActions, match, profile } = props
+  const { socketActions, match, profile, dispatch } = props
   const { players, status, currentTurn, lastCardData, isReversed } = match
 
   const [discardPile, setDiscardPile] = useState([])
@@ -31,6 +32,13 @@ const Arena = (props) => {
   const onCardSelect = (index) => {
     if (!isClientsTurn) {
       console.warn('Invalid turn')
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Wait for your turn'
+        }
+      })
       return
     }
 
@@ -122,4 +130,6 @@ const Opponents = ({ data, currentTurn }) => {
   )
 }
 
-export default Arena
+const mapDispatchToProps = dispatch => ({ dispatch })
+
+export default connect(null, mapDispatchToProps)(Arena)

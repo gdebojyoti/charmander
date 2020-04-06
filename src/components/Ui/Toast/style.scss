@@ -1,0 +1,46 @@
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  display: flex;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #fff;
+  width: 70%;
+  background-color: #333;
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 0 5px rgba(0,0,0,.54);
+  animation: fadein .3s forwards;
+
+  &::before {
+    margin-right: 7px;
+  }
+
+  &--success {
+    background-color: #2ecc71;
+    &::before {
+      content: '✔';
+    }
+  }
+  
+  &--error {
+    background-color: #e67e22;
+    &::before {
+      content: '✗';
+    }
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

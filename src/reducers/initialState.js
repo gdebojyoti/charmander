@@ -24,6 +24,10 @@ window.__INITIALSTATE__ = {
   network: {
     status: networkStatus.CONNECTED,
     errorMsg: ''
+  },
+  message: {
+    type: '',
+    text: ''
   }
 }
 
