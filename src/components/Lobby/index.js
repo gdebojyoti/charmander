@@ -6,7 +6,7 @@ import Button from 'components/Ui/Button'
 import './style'
 
 const Lobby = ({ socketActions, match, profile: { username } }) => {
-  const { id: matchId, players, host } = match
+  const { id: matchId, players, host, code } = match
 
   const startMatch = () => {
     socketActions.startMatch({
@@ -40,6 +40,10 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
     <BasicPage heading='Lobby' subheading={subheading} className='lobby'>
       <div className='player-list'>
         {players.map((player, index) => <PlayerTab data={player} isHost={host === player.username} key={index} />)}
+      </div>
+
+      <div className='lobby__code'>
+        Match code: <strong>{code}</strong>
       </div>
 
       {button}
