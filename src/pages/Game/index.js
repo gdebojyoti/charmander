@@ -19,7 +19,7 @@ const Uno = (props) => {
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
   const [showChoiceModal, setShowChoiceModal] = useState(true) // modal for user to choose between host & client
 
-  const { id: matchId, status } = match
+  const { status } = match
 
   // connect to Socket server; retrieve profile data from local storage
   useEffect(() => {
@@ -67,9 +67,9 @@ const Uno = (props) => {
       socketActions.hostMatch({ username, name })
       setShowChoiceModal(false)
     }
-    const onJoin = () => {
+    const onJoin = (code) => {
       const { username, name } = profile
-      socketActions.joinMatch({ username, name, matchId })
+      socketActions.joinMatch({ username, name, code })
       setShowChoiceModal(false)
     }
     return <HostOrJoin onHost={onHost} onJoin={onJoin} />

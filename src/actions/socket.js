@@ -72,7 +72,7 @@ export const initialize = () => {
     // messages from server
 
     // when current player (client) has successfully hosted match
-    socket.on('MATCH_HOSTED', matchId => {
+    socket.on('MATCH_HOSTED', ({ id: matchId, code }) => {
       console.log('Hosted new match', matchId)
       // update match ID in local storage
       setValue('matchId', matchId)
@@ -85,6 +85,7 @@ export const initialize = () => {
         type: 'UPDATE_MATCH_DETAILS',
         payload: {
           id: matchId,
+          code,
           status: matchStatus.PREMATCH,
           players: [{ name, username }],
           host: username
@@ -186,7 +187,7 @@ export const initialize = () => {
     })
 
     // game over
-    socket.on('GAME_OVER', matchDetails => {
+    socket.on('GAME_OVER', () => {
       dispatch({
         type: 'UPDATE_MATCH_DETAILS',
         payload: {
@@ -203,9 +204,9 @@ export const hostMatch = ({ username, name }) => {
   }
 }
 
-export const joinMatch = ({ username, name, matchId }) => {
+export const joinMatch = ({ username, name, code }) => {
   return () => {
-    socket.emit('JOIN_MATCH', { matchId: matchId || 31291, username, name })
+    socket.emit('JOIN_MATCH', { code, username, name })
   }
 }
 
@@ -213,6 +214,14 @@ export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
     socket.emit('START_MATCH', { matchId })
+  }
+}
+
+export const restartMatch = () => {
+  return (dispatch, getState) => {
+    const { match: { id: matchId }, profile: { name, username } } = getState()
+    console.log('restarting...', matchId)
+    socket.emit('REMATCH', { matchId, name, username })
   }
 }
 

@@ -5,7 +5,7 @@ import Button from 'components/Ui/Button'
 
 import './style'
 
-const PostGame = ({ match: { players }, profile: { username } }) => {
+const PostGame = ({ match: { players }, profile: { username }, socketActions }) => {
   const result = computeScores(players)
 
   const didWin = result[0].username === username
@@ -22,7 +22,7 @@ const PostGame = ({ match: { players }, profile: { username } }) => {
           )
         })}
 
-        <Button disabled>Rematch</Button>
+        <Button onClick={() => socketActions.restartMatch()}>Rematch</Button>
       </div>
     </BasicPage>
   )

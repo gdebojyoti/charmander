@@ -10,6 +10,7 @@ window.__INITIALSTATE__ = {
   },
   match: {
     id: null,
+    code: '', // shareable code for others to join
     status: '',
     players: [],
     currentTurn: '',
