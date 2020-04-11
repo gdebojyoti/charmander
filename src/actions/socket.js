@@ -1,5 +1,6 @@
 import openSocket from 'socket.io-client'
 
+import { getSearchParam } from 'utilities/general'
 import { setValue } from 'utilities/localStorage'
 import matchStatus from 'constants/matchStatus'
 import networkStatus from 'constants/networkStatus'
@@ -245,7 +246,7 @@ export const joinMatch = ({ username, name, code }) => {
 export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
-    socket.emit('START_MATCH', { matchId })
+    socket.emit('START_MATCH', { matchId, dev: getSearchParam('dev') === 'true' })
   }
 }
 

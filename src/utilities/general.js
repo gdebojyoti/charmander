@@ -1,3 +1,22 @@
+export function getSearchParam (param) {
+  if (!window.location.search) {
+    return ''
+  }
+
+  const search = window.location.search.split('?')[1]
+  const searchStrings = search.split('&')
+
+  let value = ''
+  searchStrings.forEach(searchString => {
+    const params = searchString.split('=')
+    if (params[0] === param) {
+      value = params[1]
+    }
+  })
+
+  return value
+}
+
 // Shuffle items of array | https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 export function shuffle (data) {
   const array = [...data]
