@@ -10,17 +10,16 @@ The #1 Card Game Web App
 * [x] UI
 
 #### Phase 2 features
-* [ ] Prevent screen lock (NoSleep.js)
-* [ ] Color indication after wild card has been played
-* [ ] UI for edit profile, color picker, game winner
+* [x] Post game (distribute points; start new game)
 * [ ] Ability to leave game
 * [ ] Host transfer
 * [ ] Host settings (kick player from match)
-* [ ] Post game (distribute points; start new game)
 * [ ] Settings screen (change name)
 
 #### Phase 3 features
-* [ ] Revamp UI animations
+* [ ] Prevent screen lock (NoSleep.js)
+* [ ] Revamp UI & UX (themes, animations)
+* [ ] Sound
 * [ ] FB, Google Login; invites
 * [ ] Emoji, chat, taunts
 * [ ] Leaderboard
