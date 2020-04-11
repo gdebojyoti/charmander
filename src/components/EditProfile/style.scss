@@ -1,0 +1,13 @@
+.edit-profile {
+  &__input {
+    width: 200px;
+    padding: 0 10px;
+    border: none;
+    line-height: 30px;
+    border-radius: 2px;
+  }
+
+  .button {
+    margin-top: 20px;
+  }
+}

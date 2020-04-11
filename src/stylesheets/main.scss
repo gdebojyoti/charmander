@@ -5,6 +5,8 @@ $primaryBackgroundImage: url('../assets/bright-squares.png');
   margin: 0;
   padding: 0;
   font: inherit;
+  user-select: none;
+  outline: none;
 }
 
 html, body, .app {
@@ -16,6 +18,10 @@ html, body, .app {
 body {
   font-family: Montserrat, sans-serif;
   font-size: 14px;
+}
+
+strong {
+  font-weight: 500;
 }
 
 .app {

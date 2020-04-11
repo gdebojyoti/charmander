@@ -53,7 +53,7 @@ const config = {
         ]
       },
       {
-        test: /\.(png|jpg)$/,
+        test: /\.(png|jpg|webp)$/,
         loader: 'url-loader'
       }
     ]

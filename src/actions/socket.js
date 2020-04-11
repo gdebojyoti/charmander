@@ -1,11 +1,13 @@
 import openSocket from 'socket.io-client'
 
+import { getSearchParam } from 'utilities/general'
 import { setValue } from 'utilities/localStorage'
+import matchStatus from 'constants/matchStatus'
 import networkStatus from 'constants/networkStatus'
 
 // use heroku link only on production ("prod=true" in URL) only
 // const remoteUrl = window.location.search.indexOf('prod') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
-const remoteUrl = window.location.host.indexOf('playludo') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
+const remoteUrl = window.location.host.indexOf('uno') >= 0 ? 'https://charmeleon.herokuapp.com/' : `http://${window.location.hostname}:3333`
 
 const socket = openSocket(remoteUrl)
 
@@ -71,14 +73,24 @@ export const initialize = () => {
     // messages from server
 
     // when current player (client) has successfully hosted match
-    socket.on('MATCH_HOSTED', matchId => {
+    socket.on('MATCH_HOSTED', ({ id: matchId, code }) => {
       console.log('Hosted new match', matchId)
       // update match ID in local storage
       setValue('matchId', matchId)
 
+      const {
+        profile: { name, username } = {}
+      } = getState()
+
       dispatch({
         type: 'UPDATE_MATCH_DETAILS',
-        payload: { id: matchId }
+        payload: {
+          id: matchId,
+          code,
+          status: matchStatus.PREMATCH,
+          players: [{ name, username }],
+          host: username
+        }
       })
     })
 
@@ -96,6 +108,14 @@ export const initialize = () => {
     socket.on('MATCH_JOIN_FAILED', () => {
       console.warn('Could not join match')
       setValue('matchId', null)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not join match'
+        }
+      })
     })
 
     // TODO: optimize payload
@@ -112,6 +132,14 @@ export const initialize = () => {
     // when match start fails
     socket.on('MATCH_START_FAILED', reason => {
       console.warn('Could not start match', reason)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not start match'
+        }
+      })
     })
 
     // when match starts
@@ -132,6 +160,14 @@ export const initialize = () => {
     socket.on('MATCH_REJOIN_FAILED', () => {
       console.warn('Could not rejoin match')
       setValue('matchId', null)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Could not rejoin match'
+        }
+      })
     })
 
     // when user rejoins match
@@ -146,6 +182,14 @@ export const initialize = () => {
     // when invalid card is selected
     socket.on('CANNOT_PLAY_CARD', reason => {
       console.info('Cannot play card', reason)
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: `Cannot play that card: ${reason}`
+        }
+      })
     })
 
     // when a card is played
@@ -176,9 +220,13 @@ export const initialize = () => {
     })
 
     // game over
-    socket.on('GAME_OVER', ({ winner }) => {
-      console.log(`Winner Winner Chicken Dinner! Congrats ${winner}`)
-      window.alert(`Winner Winner Chicken Dinner! Congrats ${winner}`)
+    socket.on('GAME_OVER', () => {
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: {
+          status: matchStatus.COMPLETED
+        }
+      })
     })
   }
 }
@@ -189,16 +237,24 @@ export const hostMatch = ({ username, name }) => {
   }
 }
 
-export const joinMatch = ({ username, name, matchId }) => {
+export const joinMatch = ({ username, name, code }) => {
   return () => {
-    socket.emit('JOIN_MATCH', { matchId: matchId || 31291, username, name })
+    socket.emit('JOIN_MATCH', { code, username, name })
   }
 }
 
 export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
-    socket.emit('START_MATCH', { matchId })
+    socket.emit('START_MATCH', { matchId, dev: getSearchParam('dev') === 'true' })
+  }
+}
+
+export const restartMatch = () => {
+  return (dispatch, getState) => {
+    const { match: { id: matchId }, profile: { name, username } } = getState()
+    console.log('restarting...', matchId)
+    socket.emit('REMATCH', { matchId, name, username })
   }
 }
 

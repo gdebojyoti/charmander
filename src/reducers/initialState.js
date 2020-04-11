@@ -10,6 +10,7 @@ window.__INITIALSTATE__ = {
   },
   match: {
     id: null,
+    code: '', // shareable code for others to join
     status: '',
     players: [],
     currentTurn: '',
@@ -23,6 +24,10 @@ window.__INITIALSTATE__ = {
   network: {
     status: networkStatus.CONNECTED,
     errorMsg: ''
+  },
+  message: {
+    type: '',
+    text: ''
   }
 }
 

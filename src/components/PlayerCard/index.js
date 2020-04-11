@@ -6,19 +6,24 @@ const PlayerCard = ({ data, isTurn, disabled = false, hideCardCount = false }) =
   // TODO: fix data for img, isOnline & cardCount
   const {
     name,
-    img = 'https://www.pinclipart.com/picdir/middle/180-1800122_cartoon-skeleton-head-png-clipart.png',
-    isOnline = true,
+    img = 'https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png',
     cards = [],
-    cardCount = cards.length
+    cardCount = cards.length,
+    borderId
   } = data
 
+  // TODO: find a way to depict online status
+
   const mainClass = `opponent-card ${isTurn ? 'opponent-card--active' : ''} ${disabled ? 'opponent-card--disabled' : ''}`
-  const imgClass = `opponent-card__img ${isOnline ? 'opponent-card__img--online' : ''}`
+  const frameClass = `opponent-card__frameset ${borderId === 1 ? 'opponent-card__frameset--flashy' : ''}`
   const cardCountClass = `opponent-card__card-count ${cardCount < 2 ? 'opponent-card__card-count--warn' : ''}`
 
   return (
     <div className={mainClass}>
-      <img className={imgClass} src={img} />
+      <div className={frameClass}>
+        <div className='opponent-card__frame' />
+        <img className='opponent-card__img' src={img} />
+      </div>
       <div className='opponent-card__name'>{name}</div>
       {!hideCardCount && <div className={cardCountClass}>{cardCount}</div>}
     </div>

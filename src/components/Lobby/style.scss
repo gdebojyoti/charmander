@@ -1,0 +1,45 @@
+.lobby {
+  &__code {
+    margin-top: 20px;
+  }
+  
+  .button {
+    margin-top: 20px;
+  }
+}
+
+.player-list {
+  width: 100%;
+}
+
+.player-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-top: 10px;
+  padding: 5px;
+  color: #fff;
+  background: linear-gradient(to right, #649173, #dbd5a466);
+  border-radius: 4px;
+
+  &__img {
+    width: 40px;
+    height: 40px;
+  }
+
+  &__name {
+    width: calc(100% - 40px - 10px);
+  }
+
+  &__host {
+    position: absolute;
+    right: 10px;
+    display: inline-block;
+    padding: 0 5px;
+    font-size: 10px;
+    line-height: 16px;
+    background-color: #333;
+    border-radius: 2px;
+  }
+}

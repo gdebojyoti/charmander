@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Arena from 'components/Arena'
+import Lobby from 'components/Lobby'
 import EditProfile from 'components/EditProfile' // change
 import HostOrJoin from 'components/HostOrJoin'
+import Arena from 'components/Arena'
+import PostGame from 'components/PostGame'
 
+import matchStatus from 'constants/matchStatus'
 import { getValue } from 'utilities/localStorage'
 import * as socketActions from 'actions/socket'
 import * as profileActions from 'actions/profile'
@@ -16,7 +19,7 @@ const Uno = (props) => {
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
   const [showChoiceModal, setShowChoiceModal] = useState(true) // modal for user to choose between host & client
 
-  const { id: matchId, status } = match
+  const { status } = match
 
   // connect to Socket server; retrieve profile data from local storage
   useEffect(() => {
@@ -64,21 +67,48 @@ const Uno = (props) => {
       socketActions.hostMatch({ username, name })
       setShowChoiceModal(false)
     }
-    const onJoin = () => {
+    const onJoin = (code) => {
       const { username, name } = profile
-      socketActions.joinMatch({ username, name, matchId })
+      socketActions.joinMatch({ username, name, code })
       setShowChoiceModal(false)
     }
     return <HostOrJoin onHost={onHost} onJoin={onJoin} />
   }
 
-  return (
-    <Arena
-      socketActions={socketActions}
-      match={match}
-      profile={profile}
-    />
-  )
+  // before match starts
+  if (status === matchStatus.PREMATCH) {
+    return (
+      <Lobby
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
+  // during match
+  if (status === matchStatus.LIVE) {
+    return (
+      <Arena
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
+  // on match complete
+  if (status === matchStatus.COMPLETED) {
+    return (
+      <PostGame
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
+  return null
 }
 
 const mapStateToProps = ({

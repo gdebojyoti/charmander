@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
 import PlayerCard from 'components/PlayerCard'
 import DrawCard from 'components/DrawCard'
@@ -10,8 +11,8 @@ import ColorPicker from 'components/ColorPicker'
 import './style'
 
 const Arena = (props) => {
-  const { socketActions, match, profile } = props
-  const { id: matchId, players, status, currentTurn, lastCardData, isReversed } = match
+  const { socketActions, match, profile, dispatch } = props
+  const { players, status, currentTurn, lastCardData, isReversed } = match
 
   const [discardPile, setDiscardPile] = useState([])
   const [indexForWildCard, setIndexForWildCard] = useState(-1)
@@ -28,15 +29,16 @@ const Arena = (props) => {
 
   const playerDetailsClass = `player-details ${isClientsTurn ? 'player-details--active' : ''}`
 
-  const startMatch = () => {
-    socketActions.startMatch({
-      matchId
-    })
-  }
-
   const onCardSelect = (index) => {
     if (!isClientsTurn) {
       console.warn('Invalid turn')
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: 'Wait for your turn'
+        }
+      })
       return
     }
 
@@ -79,15 +81,6 @@ const Arena = (props) => {
   console.log('opponents', opponents)
   console.log('discardPile', discardPile)
 
-  if (status === 'PREMATCH') {
-    return (
-      <div className='arena'>
-        <button onClick={startMatch}>Start Match</button>
-        {status !== 'LIVE' && <div>Status: {status}</div>}
-      </div>
-    )
-  }
-
   return (
     <div className='arena'>
       <Opponents data={opponents} currentTurn={currentTurn} />
@@ -99,7 +92,7 @@ const Arena = (props) => {
       </div>
 
       <div className={playerDetailsClass}>
-        <PlayerCard data={{ ...opponents[0], name: 'You' }} hideCardCount />
+        <PlayerCard data={{ ...client, name: 'You' }} />
       </div>
 
       <PlayerHand data={client.canPass ? client.cards.slice(0, client.cards.length - 1) : client.cards} onCardSelect={onCardSelect} />
@@ -137,4 +130,6 @@ const Opponents = ({ data, currentTurn }) => {
   )
 }
 
-export default Arena
+const mapDispatchToProps = dispatch => ({ dispatch })
+
+export default connect(null, mapDispatchToProps)(Arena)
