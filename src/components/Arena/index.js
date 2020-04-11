@@ -92,7 +92,7 @@ const Arena = (props) => {
       </div>
 
       <div className={playerDetailsClass}>
-        <PlayerCard data={{ ...opponents[0], name: 'You' }} hideCardCount />
+        <PlayerCard data={{ ...client, name: 'You' }} />
       </div>
 
       <PlayerHand data={client.canPass ? client.cards.slice(0, client.cards.length - 1) : client.cards} onCardSelect={onCardSelect} />
