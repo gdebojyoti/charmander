@@ -7,6 +7,7 @@ import DiscardPile from 'components/DiscardPile'
 import PlayerHand from 'components/PlayerHand'
 import DrawnCard from 'components/DrawnCard'
 import ColorPicker from 'components/ColorPicker'
+import Button from 'components/Ui/Button'
 
 import './style'
 
@@ -83,6 +84,11 @@ const Arena = (props) => {
 
   return (
     <div className='arena'>
+      {/* leave game button */}
+      {/* TODO: Fix leave game button (avoid using negative scale) */}
+      {/* TODO: Show confirmation dialog */}
+      <Button onClick={() => socketActions.leaveMatch()}>&#10132;</Button>
+
       <Opponents data={opponents} currentTurn={currentTurn} />
 
       <div className='mid-section'>
