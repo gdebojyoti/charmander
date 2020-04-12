@@ -36,8 +36,24 @@ strong {
   height: 100%;
   max-width: 480px;
   max-height: 900px;
-  background: linear-gradient(-45deg, #4facfe 0%, #00f2fe 100%);
   background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
-  // background: linear-gradient(-45deg, #ece9e6, #ffffff);
-  // background: linear-gradient(-45deg, #abbaab, #ffffff);
+  // animation: flicker 3s linear infinite;
+}
+
+@keyframes flicker {
+  0% {
+    background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
+  }
+  25% {
+    background: $primaryBackgroundImage 200px 50px, linear-gradient(-45deg, #ffefba, #ffffff);
+  }
+  50% {
+    background: $primaryBackgroundImage 50px -210px, linear-gradient(-45deg, #ffefba, #ffffff);
+  }
+  75% {
+    background: $primaryBackgroundImage 150px -100px, linear-gradient(-45deg, #ffefba, #ffffff);
+  }
+  100% {
+    background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
+  }
 }
