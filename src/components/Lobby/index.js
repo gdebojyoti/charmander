@@ -47,6 +47,7 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
       </div>
 
       {button}
+      <Button onClick={() => socketActions.leaveMatch()}>Leave game</Button>
     </BasicPage>
   )
 }

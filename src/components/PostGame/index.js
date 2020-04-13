@@ -2,13 +2,19 @@ import React from 'react'
 
 import BasicPage from 'components/Ui/BasicPage'
 import Button from 'components/Ui/Button'
+import { setValue } from 'utilities/localStorage'
 
 import './style'
 
-const PostGame = ({ match: { players }, profile: { username }, socketActions }) => {
-  const result = computeScores(players)
+const PostGame = ({ match: { players }, profile: { username }, socketActions, isAbandoned = false }) => {
+  const result = computeScores(players, isAbandoned)
 
   const didWin = result[0].username === username
+
+  const goHome = () => {
+    setValue('matchId', null)
+    window.location.href = '/'
+  }
 
   return (
     <BasicPage
@@ -22,7 +28,8 @@ const PostGame = ({ match: { players }, profile: { username }, socketActions }) 
           )
         })}
 
-        <Button onClick={() => socketActions.restartMatch()}>Rematch</Button>
+        {!isAbandoned && <Button onClick={() => socketActions.restartMatch()}>Rematch</Button>}
+        <Button onClick={goHome}>Leave</Button>
       </div>
     </BasicPage>
   )
@@ -40,7 +47,7 @@ const PlayerTab = ({ data, isHost }) => {
   )
 }
 
-function computeScores (players) {
+function computeScores (players, isAbandoned) {
   // final value to be returned
   const result = []
 
@@ -60,10 +67,13 @@ function computeScores (players) {
     return total + score
   }, 0)
 
-  // compute actual score of each player; lower is better
-  result.forEach(player => {
-    player.score = total - player.score
-  })
+  // if match was abandoned, keep score as it is
+  if (!isAbandoned) {
+    // compute actual score of each player
+    result.forEach(player => {
+      player.score = total - player.score
+    })
+  }
 
   // sort players in decreasing order of score
   result.sort((a, b) => {

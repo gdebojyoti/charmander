@@ -228,6 +228,34 @@ export const initialize = () => {
         }
       })
     })
+
+    // player left
+    socket.on('PLAYER_LEFT', ({ match: matchDetails, username }) => {
+      const {
+        match: { players = [] } = {}
+      } = getState()
+
+      const player = players.find(player => player.username === username)
+      if (!player) {
+        return
+      }
+
+      const { name = 'A player' } = player
+
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: {
+          type: 'WARNING',
+          text: `${name} has left the match`
+        }
+      })
+
+      // TODO: Update only necessary fields; do client-side parsing
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: matchDetails
+      })
+    })
   }
 }
 
@@ -283,5 +311,15 @@ export const drawCard = (data) => {
 export const passTurn = (data) => {
   return () => {
     socket.emit('PASS_TURN', data)
+  }
+}
+
+export const leaveMatch = () => {
+  return (dispatch, getState) => {
+    const { match: { id: matchId } } = getState()
+    socket.emit('LEAVE_MATCH', matchId)
+
+    setValue('matchId', null)
+    window.location.href = '/'
   }
 }

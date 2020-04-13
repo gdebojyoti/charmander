@@ -97,13 +97,14 @@ const Uno = (props) => {
     )
   }
 
-  // on match complete
-  if (status === matchStatus.COMPLETED) {
+  // on match abandoned (i.e., only one player remains)
+  if (status === matchStatus.ABANDONED) {
     return (
       <PostGame
         socketActions={socketActions}
         match={match}
         profile={profile}
+        isAbandoned
       />
     )
   }
