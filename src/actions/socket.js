@@ -261,7 +261,7 @@ export const initialize = () => {
 
 export const hostMatch = ({ username, name }) => {
   return () => {
-    socket.emit('HOST_MATCH', { username, name })
+    socket.emit('HOST_MATCH', { username, name, debug: getSearchParam('debug') === 'true' })
   }
 }
 
@@ -274,7 +274,7 @@ export const joinMatch = ({ username, name, code }) => {
 export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
-    socket.emit('START_MATCH', { matchId, dev: getSearchParam('dev') === 'true' })
+    socket.emit('START_MATCH', { matchId, debug: getSearchParam('debug') === 'true' })
   }
 }
 

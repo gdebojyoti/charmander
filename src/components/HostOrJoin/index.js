@@ -4,7 +4,7 @@ import './style'
 
 const HostOrJoin = ({ onHost, onJoin: onJoinProp }) => {
   const [showInput, setShowInput] = useState(false)
-  const [code, setCode] = useState('31291')
+  const [code, setCode] = useState('')
 
   const onChange = e => {
     setCode(e.target.value)

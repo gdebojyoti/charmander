@@ -23,10 +23,15 @@ const PlayerHand = ({ data = [], onCardSelect }) => {
     width: (data.length - 1) * 55 + 100 + 20
   }
 
+  const sortedCards = [...data].sort((a, b) => {
+    // arrange in increasing value of ID
+    return a.id < b.id ? -1 : 1
+  })
+
   return (
     <div className='player-hand'>
       <div className='player-hand__main' style={mainStyle}>
-        {data.map((card, index) => {
+        {sortedCards.map((card, index) => {
           // styles for fading in & transforming
           const style = {
             transform: `translateX(${10 + index * 55}px)`,
