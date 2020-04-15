@@ -61,7 +61,6 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       hash: false,
-      title: 'The Todo App!',
       template: sourceDirectory + '/index.html',
       filename: 'index.html' // relative to root of the application
     }),
