@@ -8,6 +8,7 @@ import PlayerHand from 'components/PlayerHand'
 import DrawnCard from 'components/DrawnCard'
 import ColorPicker from 'components/ColorPicker'
 import Button from 'components/Ui/Button'
+import { getPlayableCards } from 'utilities/card'
 
 import './style'
 
@@ -81,6 +82,9 @@ const Arena = (props) => {
     setIdForWildCard(-1)
   }
 
+  // cards in player's hand that can be played
+  const playableCards = getPlayableCards(client.cards, lastCardData)
+
   console.log('lastCardData', lastCardData)
   console.log('client', client)
   console.log('opponents', opponents)
@@ -96,8 +100,7 @@ const Arena = (props) => {
       <Opponents data={opponents} currentTurn={currentTurn} />
 
       <div className='mid-section'>
-        {/* TODO: Call socket method on click */}
-        {isClientsTurn && <DrawCard onClick={onDraw} />}
+        {isClientsTurn && <DrawCard shouldFocus={!playableCards.length} onClick={onDraw} />}
         <DiscardPile data={discardPile} isReversed={isReversed} />
       </div>
 
@@ -105,13 +108,18 @@ const Arena = (props) => {
         <PlayerCard data={{ ...client, name: 'You' }} />
       </div>
 
-      <PlayerHand data={client.canPass ? client.cards.slice(0, client.cards.length - 1) : client.cards} onCardSelect={onCardSelect} />
+      <PlayerHand
+        data={client.canPass ? client.cards.slice(0, client.cards.length - 1) : client.cards}
+        onCardSelect={onCardSelect}
+        playableCards={playableCards}
+      />
 
       {client.canPass && (
         <DrawnCard
           data={client.cards[client.cards.length - 1]}
           onKeep={onKeepDrawnCard}
           onPlay={onPlayDrawnCard}
+          playableCards={playableCards}
         />
       )}
 

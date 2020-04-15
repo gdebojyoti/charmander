@@ -5,12 +5,18 @@ import Card from 'components/Card'
 import './style'
 
 // TODO: Show 'drawing' text till new card is available; remove fake delay
-const DrawnCard = ({ data, onKeep, onPlay }) => {
+const DrawnCard = ({ data, onKeep, onPlay, playableCards }) => {
   const [isCardReady, setIsCardReady] = useState(false)
   useEffect(() => {
-    setTimeout(() => {
-      setIsCardReady(true)
-    }, 10)
+    if (playableCards.indexOf(data.id) > -1) {
+      // if drawn card is playable, give option to keep / play
+      setTimeout(() => {
+        setIsCardReady(true)
+      }, 10)
+    } else {
+      // if drawn card is unplayable, keep card automatically & continue game
+      onKeep()
+    }
   }, [])
 
   return (
