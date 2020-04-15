@@ -16,7 +16,7 @@ const Arena = (props) => {
   const { players, status, currentTurn, lastCardData, isReversed } = match
 
   const [discardPile, setDiscardPile] = useState([])
-  const [indexForWildCard, setIndexForWildCard] = useState(-1)
+  const [idForWildCard, setIdForWildCard] = useState(-1)
 
   useEffect(() => {
     console.log('change lastCardData', lastCardData)
@@ -30,7 +30,8 @@ const Arena = (props) => {
 
   const playerDetailsClass = `player-details ${isClientsTurn ? 'player-details--active' : ''}`
 
-  const onCardSelect = (index) => {
+  const onCardSelect = (id) => {
+    // check if its client's turn
     if (!isClientsTurn) {
       console.warn('Invalid turn')
       dispatch({
@@ -43,15 +44,18 @@ const Arena = (props) => {
       return
     }
 
-    const card = client.cards[index]
-    console.log('card selected', card)
+    // find card that matches ID
+    const card = client.cards.find(card => card.id === id)
+    console.log('card selected', card, client.cards, id)
 
+    // check if wild card is being played; if so, save card ID
     if (['WILD_DRAW_FOUR', 'WILD'].indexOf(card.name) > -1) {
-      setIndexForWildCard(index)
+      console.log('wild card', card)
+      setIdForWildCard(id) // save card's ID for further use
       return
     }
 
-    socketActions.selectCard(index)
+    socketActions.selectCard(id)
   }
 
   // when user clicks on draw stack
@@ -65,16 +69,16 @@ const Arena = (props) => {
   }
 
   // when user plays card drawn from draw stack
-  const onPlayDrawnCard = () => {
+  const onPlayDrawnCard = (id) => {
     // TODO: Client side validation; skip option to play card if card drawn is invalid
-    onCardSelect(client.cards.length - 1)
+    onCardSelect(id)
   }
 
   // when user chooses color after selecting wild card
   const onPlayWildCard = (color) => {
-    socketActions.selectCard(indexForWildCard, { color })
+    socketActions.selectCard(idForWildCard, { color })
     // close color picker
-    setIndexForWildCard(-1)
+    setIdForWildCard(-1)
   }
 
   console.log('lastCardData', lastCardData)
@@ -111,7 +115,7 @@ const Arena = (props) => {
         />
       )}
 
-      {indexForWildCard !== -1 && (
+      {idForWildCard !== -1 && (
         <ColorPicker
           onClick={onPlayWildCard}
         />

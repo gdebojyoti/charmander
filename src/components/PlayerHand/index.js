@@ -14,7 +14,7 @@ const PlayerHand = ({ data = [], onCardSelect }) => {
       <div className='player-hand__main'>
         {data.map((card, index) => {
           return (
-            <div className='player-hand__card-wrapper' key={index} onClick={() => onClickCard(index)}>
+            <div className='player-hand__card-wrapper' key={index} onClick={() => onClickCard(card.id)}>
               <Card data={card} />
             </div>
           )

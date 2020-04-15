@@ -20,7 +20,7 @@ const DrawnCard = ({ data, onKeep, onPlay }) => {
           <>
             <button className='drawn-card__button' onClick={onKeep}>Keep</button>
             <Card data={data} />
-            <button className='drawn-card__button' onClick={onPlay}>Play</button>
+            <button className='drawn-card__button' onClick={() => onPlay(data.id)}>Play</button>
           </>
         )}
         {!isCardReady && 'Drawing card...'}

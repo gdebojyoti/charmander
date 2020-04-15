@@ -292,13 +292,9 @@ export const rejoinMatch = ({ username, matchId }) => {
   }
 }
 
-export const onSelectCard = card => {
-  socket.emit('CARD_SELECTED', card)
-}
-
-export const selectCard = (index, options) => {
+export const selectCard = (id, options) => {
   return (dispatch, getState) => {
-    socket.emit('SELECT_CARD', { index, options })
+    socket.emit('SELECT_CARD', { id, options })
   }
 }
 
