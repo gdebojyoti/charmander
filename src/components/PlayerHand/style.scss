@@ -1,18 +1,12 @@
 .player-hand {
-  // transform: translateY(20%);
   height: 165px;
   margin-top: 5px;
   opacity: 0.8;
   overflow: hidden;
-  transition: all .2s;
+  transition: opacity .2s;
 
   &--active {
-    // transform: none;
     opacity: 1;
-
-    .player-hand__card-wrapper {
-      pointer-events: initial;
-    }
   }
 
   &__main {
@@ -37,9 +31,8 @@
     left: 0;
     // min-width: 55px;
     padding: 7px 0;
-    // cards in player's hand are initially hidden; then they are faded in
+    // cards in player's hand are initially hidden; then they are faded in (while sliding in as well - left to right)
     opacity: 0;
-    pointer-events: none;
     transition: transform .5s, opacity .2s;
 
     &:last-of-type {

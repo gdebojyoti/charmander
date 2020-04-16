@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
 
 import AnimatedCard from 'components/AnimatedCard'
 import PlayerCard from 'components/PlayerCard'
@@ -14,17 +13,18 @@ import { getPlayableCards } from 'utilities/card'
 import './style'
 
 const Arena = (props) => {
-  const { socketActions, match, profile, dispatch } = props
+  const { socketActions, match, profile } = props
   const { players, currentTurn, lastCardData, isReversed } = match
 
   const [discardPile, setDiscardPile] = useState([])
   const [idForWildCard, setIdForWildCard] = useState(-1)
   const [animatedCard, setAnimatedCard] = useState(null)
 
+  // update discard pile if a new card is added to it (check by card ID)
   useEffect(() => {
     console.log('change lastCardData', lastCardData)
     setDiscardPile([...discardPile, lastCardData])
-  }, [lastCardData])
+  }, [lastCardData.id])
 
   const client = players.find(player => player.username === profile.username) || {}
   const opponents = players.filter(player => player.username !== profile.username) || []
@@ -38,19 +38,7 @@ const Arena = (props) => {
   const playerDetailsClass = `player-details ${isClientsTurn ? 'player-details--active' : ''}`
 
   const onCardSelect = (id, shouldAnimate) => {
-    // check if its client's turn
-    if (!isClientsTurn) {
-      console.warn('Invalid turn')
-      dispatch({
-        type: 'SET_MESSAGE',
-        payload: {
-          type: 'WARNING',
-          text: 'Wait for your turn'
-        }
-      })
-      return
-    }
-
+    // check if shouldAnimated is false (eg: when color is picked for wild card)
     if (shouldAnimate) {
       setAnimatedCard(id)
     }
@@ -162,6 +150,4 @@ const Opponents = ({ data, currentTurn }) => {
   )
 }
 
-const mapDispatchToProps = dispatch => ({ dispatch })
-
-export default connect(null, mapDispatchToProps)(Arena)
+export default Arena
