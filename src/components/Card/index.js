@@ -2,7 +2,7 @@ import React from 'react'
 
 import './style'
 
-const Card = ({ data, style }) => {
+const Card = ({ data, ...rest }) => {
   const { name, type, color } = data
 
   const cardClass = ['card']
@@ -13,30 +13,30 @@ const Card = ({ data, style }) => {
   color === 'GREEN' && cardClass.push('card--green')
 
   if (type === 'NUMBER') {
-    return <NumericCard className={cardClass.join(' ')} style={style} name={name} />
+    return <NumericCard className={cardClass.join(' ')} {...rest} name={name} />
   }
 
   if (type === 'ACTION') {
     if (name === 'WILD_DRAW_FOUR') {
       cardClass.push('card--wild')
-      return <WildCard className={cardClass.join(' ')} style={style} name='+4' />
+      return <WildCard className={cardClass.join(' ')} {...rest} name='+4' />
     }
 
     if (name === 'WILD') {
       cardClass.push('card--wild')
-      return <WildCard className={cardClass.join(' ')} style={style} name='' prefix='WILD' />
+      return <WildCard className={cardClass.join(' ')} {...rest} name='' prefix='WILD' />
     }
 
     if (name === 'DRAW_TWO') {
-      return <NumericCard className={cardClass.join(' ')} style={style} name='+2' />
+      return <NumericCard className={cardClass.join(' ')} {...rest} name='+2' />
     }
 
     if (name === 'SKIP') {
-      return <SymbolCard className={cardClass.join(' ')} style={style} symbol='skip' />
+      return <SymbolCard className={cardClass.join(' ')} {...rest} symbol='skip' />
     }
 
     if (name === 'REVERSE') {
-      return <SymbolCard className={cardClass.join(' ')} style={style} symbol='reverse' />
+      return <SymbolCard className={cardClass.join(' ')} {...rest} symbol='reverse' />
     }
   }
 
@@ -44,29 +44,29 @@ const Card = ({ data, style }) => {
   return <div>Pending design..</div>
 }
 
-const NumericCard = ({ className, style, name }) => {
+const NumericCard = ({ className, name, ...rest }) => {
   return (
-    <div className={className} style={style}>
+    <div className={className} {...rest}>
       {name}
       <div className='card__prefix'>{name}</div>
     </div>
   )
 }
 
-const SymbolCard = ({ className, style, symbol }) => {
+const SymbolCard = ({ className, symbol, ...rest }) => {
   const symbolClass = `card__symbol card__symbol--${symbol}`
   const prefixClass = `card__symbol-prefix card__symbol-prefix--${symbol}`
   return (
-    <div className={className} style={style}>
+    <div className={className} {...rest}>
       <div className={symbolClass} />
       <div className={prefixClass} />
     </div>
   )
 }
 
-const WildCard = ({ className, style, name, prefix = name }) => {
+const WildCard = ({ className, name, prefix = name, ...rest }) => {
   return (
-    <div className={className} style={style}>
+    <div className={className} {...rest}>
       <div className='card__wild-circle'>
         <div className='card__wild-quadrant' />
         <div className='card__wild-quadrant' />

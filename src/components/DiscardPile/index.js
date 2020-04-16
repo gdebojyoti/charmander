@@ -28,7 +28,7 @@ const DiscardPile = ({ data, isReversed }) => {
       <div className={imageClass}>
         <div className={directionClass.join(' ')} />
       </div>
-      <div className='discard-pile__card-container'>
+      <div className='discard-pile__card-container' id='discard-pile-container'>
         {discardedCards.map((card, index) => {
           const styles = {
             transform: `rotate(${angles[index % angles.length]}deg)`

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
+import AnimatedCard from 'components/AnimatedCard'
 import PlayerCard from 'components/PlayerCard'
 import DrawCard from 'components/DrawCard'
 import DiscardPile from 'components/DiscardPile'
@@ -14,10 +15,11 @@ import './style'
 
 const Arena = (props) => {
   const { socketActions, match, profile, dispatch } = props
-  const { players, status, currentTurn, lastCardData, isReversed } = match
+  const { players, currentTurn, lastCardData, isReversed } = match
 
   const [discardPile, setDiscardPile] = useState([])
   const [idForWildCard, setIdForWildCard] = useState(-1)
+  const [animatedCard, setAnimatedCard] = useState(null)
 
   useEffect(() => {
     console.log('change lastCardData', lastCardData)
@@ -27,11 +29,15 @@ const Arena = (props) => {
   const client = players.find(player => player.username === profile.username) || {}
   const opponents = players.filter(player => player.username !== profile.username) || []
 
+  useEffect(() => {
+    setAnimatedCard(null)
+  }, [client.cards.length])
+
   const isClientsTurn = client.username === currentTurn
 
   const playerDetailsClass = `player-details ${isClientsTurn ? 'player-details--active' : ''}`
 
-  const onCardSelect = (id) => {
+  const onCardSelect = (id, shouldAnimate) => {
     // check if its client's turn
     if (!isClientsTurn) {
       console.warn('Invalid turn')
@@ -45,18 +51,25 @@ const Arena = (props) => {
       return
     }
 
-    // find card that matches ID
-    const card = client.cards.find(card => card.id === id)
-    console.log('card selected', card, client.cards, id)
-
-    // check if wild card is being played; if so, save card ID
-    if (['WILD_DRAW_FOUR', 'WILD'].indexOf(card.name) > -1) {
-      console.log('wild card', card)
-      setIdForWildCard(id) // save card's ID for further use
-      return
+    if (shouldAnimate) {
+      setAnimatedCard(id)
     }
 
-    socketActions.selectCard(id)
+    // trigger socket methods after .9s (allowing sufficient time for animations to be completed)
+    setTimeout(() => {
+      // find card that matches ID
+      const card = client.cards.find(card => card.id === id)
+      console.log('card selected', card, client.cards, id)
+
+      // check if wild card is being played; if so, save card ID
+      if (['WILD_DRAW_FOUR', 'WILD'].indexOf(card.name) > -1) {
+        console.log('wild card', card)
+        setIdForWildCard(id) // save card's ID for further use
+        return
+      }
+
+      socketActions.selectCard(id)
+    }, shouldAnimate ? 900 : 0)
   }
 
   // when user clicks on draw stack
@@ -109,6 +122,7 @@ const Arena = (props) => {
       </div>
 
       <PlayerHand
+        active={isClientsTurn}
         data={client.canPass ? client.cards.slice(0, client.cards.length - 1) : client.cards}
         onCardSelect={onCardSelect}
         playableCards={playableCards}
@@ -123,13 +137,13 @@ const Arena = (props) => {
         />
       )}
 
+      {animatedCard && <AnimatedCard data={animatedCard} cards={client.cards} onComplete={() => setAnimatedCard(null)} />}
+
       {idForWildCard !== -1 && (
         <ColorPicker
           onClick={onPlayWildCard}
         />
       )}
-
-      {status !== 'LIVE' && <div>Status: {status}</div>}
     </div>
   )
 }
