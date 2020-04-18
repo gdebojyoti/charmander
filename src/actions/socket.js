@@ -104,6 +104,15 @@ export const initialize = () => {
       setValue('matchId', matchDetails.id)
     })
 
+    // when current player (client) has joined
+    socket.on('ALL_CARDS', cards => {
+      console.log('List of all possible cards', cards)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: { allCards: cards }
+      })
+    })
+
     // when no match with matchId is found
     socket.on('MATCH_JOIN_FAILED', () => {
       console.warn('Could not join match')

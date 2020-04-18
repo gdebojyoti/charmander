@@ -14,11 +14,11 @@ import './style'
 
 const Arena = (props) => {
   const { socketActions, match, profile } = props
-  const { players, currentTurn, lastCardData, isReversed } = match
+  const { players, currentTurn, lastCardData, isReversed, allCards } = match
 
   const [discardPile, setDiscardPile] = useState([])
   const [idForWildCard, setIdForWildCard] = useState(-1)
-  const [animatedCard, setAnimatedCard] = useState(null)
+  const [animatedCard, setAnimatedCard] = useState(null) // data for card to be animated (card ID, src element ID, dest element ID)
 
   // update discard pile if a new card is added to it (check by card ID)
   useEffect(() => {
@@ -29,6 +29,7 @@ const Arena = (props) => {
   const client = players.find(player => player.username === profile.username) || {}
   const opponents = players.filter(player => player.username !== profile.username) || []
 
+  // remove animated card layer when player's card stack is altered (i.e. msg from socket is received)
   useEffect(() => {
     setAnimatedCard(null)
   }, [client.cards.length])
@@ -40,7 +41,11 @@ const Arena = (props) => {
   const onCardSelect = (id, shouldAnimate) => {
     // check if shouldAnimated is false (eg: when color is picked for wild card)
     if (shouldAnimate) {
-      setAnimatedCard(id)
+      setAnimatedCard({
+        id,
+        src: `player-card-${id}`,
+        dest: 'discard-pile-container'
+      })
     }
 
     // trigger socket methods after .9s (allowing sufficient time for animations to be completed)
@@ -125,7 +130,13 @@ const Arena = (props) => {
         />
       )}
 
-      {animatedCard && <AnimatedCard data={animatedCard} cards={client.cards} onComplete={() => setAnimatedCard(null)} />}
+      {animatedCard && (
+        <AnimatedCard
+          {...animatedCard} // id, src, dest
+          cards={allCards}
+          onComplete={() => setAnimatedCard(null)}
+        />
+      )}
 
       {idForWildCard !== -1 && (
         <ColorPicker

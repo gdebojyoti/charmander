@@ -8,15 +8,17 @@ import './style'
 const DrawnCard = ({ data, onKeep, onPlay, playableCards }) => {
   const [isCardReady, setIsCardReady] = useState(false)
   useEffect(() => {
+    let timer = null
     if (playableCards.indexOf(data.id) > -1) {
       // if drawn card is playable, give option to keep / play
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setIsCardReady(true)
       }, 10)
     } else {
       // if drawn card is unplayable, keep card automatically & continue game
       onKeep()
     }
+    return () => clearTimeout(timer)
   }, [])
 
   return (
