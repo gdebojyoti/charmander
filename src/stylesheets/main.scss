@@ -36,7 +36,10 @@ strong {
   height: 100%;
   max-width: 480px;
   max-height: 900px;
-  background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
+  color: #fff;
+  text-shadow: 0 0 1px #fff7;
+  background-image: repeating-radial-gradient(circle at center, #fff3 0, #fff3 30px, #fff0 31px, #fff0 70px), linear-gradient(#EC84D3, #764ACF);
+  // background: $primaryBackgroundImage, linear-gradient(-45deg, #ffefba, #ffffff);
   // animation: flicker 3s linear infinite;
 }
 
