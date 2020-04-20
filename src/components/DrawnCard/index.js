@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Card from 'components/Card'
+import Button from 'components/Ui/Button'
 
 import './style'
 
@@ -26,9 +27,9 @@ const DrawnCard = ({ data, onKeep, onPlay, playableCards }) => {
       <div className='drawn-card__banner'>
         {isCardReady && (
           <>
-            <button className='drawn-card__button' onClick={onKeep}>Keep</button>
+            <Button onClick={onKeep}>Keep</Button>
             <Card data={data} />
-            <button className='drawn-card__button' onClick={() => onPlay(data.id)}>Play</button>
+            <Button onClick={() => onPlay(data.id)}>Play</Button>
           </>
         )}
         {!isCardReady && 'Drawing card...'}
