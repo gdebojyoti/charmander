@@ -19,7 +19,7 @@ window.__INITIALSTATE__ = {
     order: [],
     isReversed: false,
     lastCardData: {},
-    cards: [] // player's cards
+    allCards: [] // list of all cards in game
   },
   network: {
     status: networkStatus.CONNECTED,

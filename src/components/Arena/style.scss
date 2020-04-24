@@ -48,12 +48,12 @@
   margin-top: 5px;
 
   &--active {
-    .opponent-card {
+    .player-card {
       transform: scale(1.4);
     }
   }
   
-  .opponent-card {
+  .player-card {
     // width: 100%;
     transition: transform .2s;
   }

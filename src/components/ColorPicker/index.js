@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Button from 'components/Ui/Button'
+
 import './style'
 
 // TODO: Replace buttons with cards
@@ -10,9 +12,9 @@ const ColorPicker = ({ onClick }) => {
     <div className='drawn-card'>
       <div className='drawn-card__banner'>
         {colors.map(color => (
-          <button className='drawn-card__button' onClick={() => { onClick(color) }} key={color}>
+          <Button onClick={() => { onClick(color) }} key={color}>
             {color}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

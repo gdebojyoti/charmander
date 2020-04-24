@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 
+import Button from 'components/Ui/Button'
+
 import './style'
 
 const HostOrJoin = ({ onHost, onJoin: onJoinProp }) => {
   const [showInput, setShowInput] = useState(false)
-  const [code, setCode] = useState('31291')
+  const [code, setCode] = useState('')
 
   const onChange = e => {
     setCode(e.target.value)
@@ -18,15 +20,15 @@ const HostOrJoin = ({ onHost, onJoin: onJoinProp }) => {
     <div className='host-join'>
       {!showInput && (
         <>
-          <button className='host-join__button' onClick={onHost}>Host Game</button>
-          <button className='host-join__button' onClick={() => setShowInput(true)}>Join Game</button>
+          <Button onClick={onHost}>Host Game</Button>
+          <Button onClick={() => setShowInput(true)}>Join Game</Button>
         </>
       )}
       {showInput && (
         <>
           <input value={code} onChange={onChange} type='text' className='host-join__input' placeholder='Enter Code' autoFocus />
-          <button className='host-join__button' onClick={onJoin}>Join Game</button>
-          <button className='host-join__button host-join__button--disabled' onClick={() => setShowInput(false)}>Back</button>
+          <Button onClick={onJoin}>Join Game</Button>
+          <Button isSecondary onClick={() => setShowInput(false)}>Back</Button>
         </>
       )}
     </div>

@@ -10,6 +10,5 @@ export const getValue = label => {
 }
 
 export const setValue = (label, value) => {
-  console.log('type', typeof value)
   window.localStorage.setItem(label, typeof value === 'object' ? JSON.stringify(value) : value)
 }

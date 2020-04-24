@@ -25,17 +25,6 @@ $primaryBackgroundImage: url('../../assets/bright-squares.png');
     background: $primaryBackgroundImage, linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
   }
 
-  &__button {
-    padding: 0 12px;
-    border: solid 1px #333;
-    border: none;
-    line-height: 40px;
-    font-weight: 500;
-    color: #fff;
-    background: $orangeGradient;
-    border-radius: 5px;
-  }
-
   .card {
     transform: scale(0.8) rotate(25deg);
     margin: 0 30px;

@@ -104,6 +104,15 @@ export const initialize = () => {
       setValue('matchId', matchDetails.id)
     })
 
+    // when current player (client) has joined
+    socket.on('ALL_CARDS', cards => {
+      console.log('List of all possible cards', cards)
+      dispatch({
+        type: 'UPDATE_MATCH_DETAILS',
+        payload: { allCards: cards }
+      })
+    })
+
     // when no match with matchId is found
     socket.on('MATCH_JOIN_FAILED', () => {
       console.warn('Could not join match')
@@ -261,7 +270,7 @@ export const initialize = () => {
 
 export const hostMatch = ({ username, name }) => {
   return () => {
-    socket.emit('HOST_MATCH', { username, name })
+    socket.emit('HOST_MATCH', { username, name, debug: getSearchParam('debug') === 'true' })
   }
 }
 
@@ -274,7 +283,7 @@ export const joinMatch = ({ username, name, code }) => {
 export const startMatch = ({ matchId }) => {
   return (dispatch, getState) => {
     console.log('matchId start', matchId)
-    socket.emit('START_MATCH', { matchId, dev: getSearchParam('dev') === 'true' })
+    socket.emit('START_MATCH', { matchId, debug: getSearchParam('debug') === 'true' })
   }
 }
 
@@ -292,13 +301,9 @@ export const rejoinMatch = ({ username, matchId }) => {
   }
 }
 
-export const onSelectCard = card => {
-  socket.emit('CARD_SELECTED', card)
-}
-
-export const selectCard = (index, options) => {
+export const selectCard = (id, options) => {
   return (dispatch, getState) => {
-    socket.emit('SELECT_CARD', { index, options })
+    socket.emit('SELECT_CARD', { id, options })
   }
 }
 

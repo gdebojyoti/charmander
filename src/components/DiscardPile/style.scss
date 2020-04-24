@@ -1,31 +1,92 @@
+@import 'stylesheets/variables';
+
 .discard-pile {
   &__direction-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    opacity: 0.3;
+    opacity: 0.75;
 
     &--reversed {
       transform: scaleX(-1);
     }
   }
+  
   &__direction {
-    height: 100%;
+    position: relative;
+    width: 225px;
+    height: 225px;
+    border: dashed 2px #e74c3c;
     background: center / 250px no-repeat;
+    border-radius: 50%;
     animation: spin 10s linear infinite;
 
-    &--red { background-image: url('../../assets/direction/red.png') }
-    &--blue { background-image: url('../../assets/direction/blue.png') }
-    &--yellow { background-image: url('../../assets/direction/yellow.png') }
-    &--green { background-image: url('../../assets/direction/green.png') }
+    // &--red { background-image: url('../../assets/direction/red.png') }
+    // &--blue { background-image: url('../../assets/direction/blue.png') }
+    // &--yellow { background-image: url('../../assets/direction/yellow.png') }
+    // &--green { background-image: url('../../assets/direction/green.png') }
+
+    &--red {
+      border-color: $red;
+      .discard-pile__bullet {
+        background-color: $red;
+      }
+    }
+    &--blue {
+      border-color: $blue;
+      .discard-pile__bullet {
+        background-color: $blue;
+      }
+    }
+    &--yellow {
+      border-color: $yellow;
+      .discard-pile__bullet {
+        background-color: $yellow;
+      }
+    }
+    &--green {
+      border-color: $green;
+      .discard-pile__bullet {
+        background-color: $green;
+      }
+    }
+  }
+
+  &__bullet {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #e74c3c;
+
+    &:nth-of-type(1) {
+      top: 27px;
+      left: 27px;
+    }
+    &:nth-of-type(2) {
+      top: 27px;
+      right: 27px;
+    }
+    &:nth-of-type(3) {
+      right: 27px;
+      bottom: 27px;
+    }
+    &:nth-of-type(4) {
+      bottom: 27px;
+      left: 27px;
+    }
   }
 
   &__card-container {
     width: 100px;
     height: 150px;
     margin: 0 auto;
+    // transform: perspective(400px) rotateX(45deg);
   }
   
   .card {

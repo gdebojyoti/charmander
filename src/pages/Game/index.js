@@ -14,12 +14,9 @@ import * as socketActions from 'actions/socket'
 import * as profileActions from 'actions/profile'
 
 const Uno = (props) => {
-  const { match, profile, socketActions, profileActions } = props
+  const { match, match: { status }, profile, socketActions, profileActions } = props
 
   const [isReady, setIsReady] = useState(false) // true, if name & username exist in local storage
-  const [showChoiceModal, setShowChoiceModal] = useState(true) // modal for user to choose between host & client
-
-  const { status } = match
 
   // connect to Socket server; retrieve profile data from local storage
   useEffect(() => {
@@ -43,14 +40,6 @@ const Uno = (props) => {
     }
   }, [])
 
-  // TODO: find a better condition for hiding modal
-  // no need for choice modal if status is already LIVE
-  useEffect(() => {
-    if (status) {
-      setShowChoiceModal(false)
-    }
-  }, [status])
-
   // if isReady = false, open edit profile form
   if (!isReady) {
     const onReady = (profileData) => {
@@ -60,18 +49,18 @@ const Uno = (props) => {
     return <EditProfile onReady={onReady} />
   }
 
-  // if showChoiceModal = true, open form to select host vs join (as a client)
-  if (showChoiceModal) {
+  // if no match status, open form to select host vs join (as a client)
+  if (!status) {
     const onHost = () => {
       const { username, name } = profile
       socketActions.hostMatch({ username, name })
-      setShowChoiceModal(false)
     }
     const onJoin = (code) => {
       const { username, name } = profile
       socketActions.joinMatch({ username, name, code })
-      setShowChoiceModal(false)
     }
+
+    // modal for user to choose between host & client
     return <HostOrJoin onHost={onHost} onJoin={onJoin} />
   }
 

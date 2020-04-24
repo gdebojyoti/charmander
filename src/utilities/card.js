@@ -1,40 +1,29 @@
-// import { cardTypes } from 'constants'
+// return array of card IDs in player's hand that are playable
+export function getPlayableCards (hand, lastCardData) {
+  const playableCards = []
 
-// check card for special properties (eg: SKIP, WILD_CARD)
-export function checkCard (card, playerOptions = {}) {
-  const { type, name, color, ...rest } = card
+  hand.forEach(({ name, type, id, color }) => {
+    let isPlayable = false
 
-  const response = {
-    // selfSkip: false, // if true, skip player's next turn
-    opponentSkips: 0, // number of opponents whose turn is to be skipped; -1 for all
-    color, // color for next turn
-    // TODO: consider adding another prop for 'color' if card & effective colors are different - may be the case in a future ACTION card
-    name,
-    type,
-    drawsForNextPlayer: 0,
-    ...rest
-  }
-
-  if ((['WILD_DRAW_FOUR', 'WILD'].indexOf(name) > -1) && playerOptions.color) {
-    response.color = playerOptions.color
-  }
-
-  switch (name) {
-    case 'WILD_DRAW_FOUR': {
-      response.opponentSkips = 1
-      response.drawsForNextPlayer = 4
-      break
+    // same color
+    if (color === lastCardData.color) {
+      isPlayable = true
     }
-    case 'DRAW_TWO': {
-      response.opponentSkips = 1
-      response.drawsForNextPlayer = 2
-      break
-    }
-    case 'SKIP': {
-      response.opponentSkips = 1
-      break
-    }
-  }
 
-  return response
+    // in case of wild cards
+    if (['WILD', 'WILD_DRAW_FOUR'].indexOf(name) > -1) {
+      isPlayable = true
+    }
+
+    // same number or action ('REVERSE')
+    if (name === lastCardData.name) {
+      isPlayable = true
+    }
+
+    if (isPlayable) {
+      playableCards.push(id)
+    }
+  })
+
+  return playableCards
 }

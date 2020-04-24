@@ -4,13 +4,24 @@
   padding: 0 12px;
   border: solid 1px #333;
   border: none;
-  line-height: 35px;
+  line-height: 36px;
   font-weight: 500;
   color: #fff;
   background: $orangeGradient;
   border-radius: 5px;
+  box-shadow: 0 1px 2px #0009;
+  &:focus, &:active {
+    box-shadow: inset 0 1px 2px #0009;
+  }
+
+  &--secondary {
+    background: linear-gradient(to right, #232526, #414345);
+  }
 
   &--disabled {
     background: #bdc3c7;
+    &, &:focus, &:active {
+      box-shadow: none;
+    }
   }
 }
