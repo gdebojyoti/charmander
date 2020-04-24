@@ -10,12 +10,13 @@
 .ranked-player {
   display: flex;
   align-items: center;
-  margin-top: 10px;
   position: relative;
   width: 100%;
-  padding: 5px;
-  color: #fff;
-  background: linear-gradient(to right, #649173, #dbd5a466);
+  margin-top: 10px;
+  padding: 5px 10px 5px 5px;
+  color: #0009;
+  text-shadow: 0 0 1px #0003;
+  background: linear-gradient(to right, #ffefba, #fff6);
   border-radius: 4px;
 
   &__rank {
@@ -27,6 +28,7 @@
     text-align: center;
     background-color: #e67e22;
     border-radius: 50%;
+    box-shadow: 0 1px 0 #0003;
   }
 
   &__img {
@@ -42,6 +44,5 @@
   &__score {
     width: 40px;
     text-align: right;
-    text-shadow: 0 0 2px rgba(0,0,0,.54);
   }
 }

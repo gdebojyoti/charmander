@@ -19,8 +19,9 @@
   position: relative;
   margin-top: 10px;
   padding: 5px;
-  color: #fff;
-  background: linear-gradient(to right, #649173, #dbd5a466);
+  color: #0009;
+  text-shadow: 0 0 1px #0003;
+  background: linear-gradient(to right, #ffefba, #fff6);
   border-radius: 4px;
 
   &__img {
@@ -39,6 +40,7 @@
     padding: 0 5px;
     font-size: 10px;
     line-height: 16px;
+    color: #fff;
     background-color: #333;
     border-radius: 2px;
   }
