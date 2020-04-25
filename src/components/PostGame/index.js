@@ -29,7 +29,7 @@ const PostGame = ({ match: { players }, profile: { username }, socketActions, is
         })}
 
         {!isAbandoned && <Button onClick={() => socketActions.restartMatch()}>Rematch</Button>}
-        <Button onClick={goHome}>Leave</Button>
+        <Button isSecondary onClick={goHome}>Leave</Button>
       </div>
     </BasicPage>
   )
