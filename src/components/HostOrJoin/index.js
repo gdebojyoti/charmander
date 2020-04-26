@@ -1,12 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Button from 'components/Ui/Button'
+
+import { getValue, remove } from 'utilities/localStorage'
 
 import './style'
 
 const HostOrJoin = ({ onHost, onJoin: onJoinProp }) => {
   const [showInput, setShowInput] = useState(false)
   const [code, setCode] = useState('')
+
+  useEffect(() => {
+    // check for match code in local storage
+    const code = getValue('matchCode')
+
+    // auto-join match if code if found
+    if (code) {
+      setShowInput(true)
+      setCode(code)
+      onJoinProp(code)
+
+      remove('matchCode')
+    }
+  }, [])
 
   const onChange = e => {
     setCode(e.target.value)

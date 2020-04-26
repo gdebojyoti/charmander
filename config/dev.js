@@ -53,7 +53,7 @@ const config = {
         ]
       },
       {
-        test: /\.(png|jpg|webp)$/,
+        test: /\.(png|jpg|webp|svg)$/,
         loader: 'url-loader'
       }
     ]
@@ -69,7 +69,8 @@ const config = {
       chunkFilename: 'csschunk-[name].bundle.css'
     }),
     new CopyPlugin([
-      { from: `${sourceDirectory}/assets`, to: `${publicDirectory}/assets` }
+      { from: `${sourceDirectory}/assets`, to: `${publicDirectory}/assets` },
+      { from: `${sourceDirectory}/raw`, to: `${publicDirectory}` }
     ])
   ]
 }

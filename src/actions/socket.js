@@ -1,7 +1,7 @@
 import openSocket from 'socket.io-client'
 
 import { getSearchParam } from 'utilities/general'
-import { setValue } from 'utilities/localStorage'
+import { setValue, remove } from 'utilities/localStorage'
 import matchStatus from 'constants/matchStatus'
 import networkStatus from 'constants/networkStatus'
 
@@ -116,7 +116,7 @@ export const initialize = () => {
     // when no match with matchId is found
     socket.on('MATCH_JOIN_FAILED', () => {
       console.warn('Could not join match')
-      setValue('matchId', null)
+      remove('matchId')
 
       dispatch({
         type: 'SET_MESSAGE',
@@ -168,7 +168,7 @@ export const initialize = () => {
     // when user fails to rejoin match
     socket.on('MATCH_REJOIN_FAILED', () => {
       console.warn('Could not rejoin match')
-      setValue('matchId', null)
+      remove('matchId')
 
       dispatch({
         type: 'SET_MESSAGE',
@@ -275,8 +275,9 @@ export const hostMatch = ({ username, name }) => {
 }
 
 export const joinMatch = ({ username, name, code }) => {
+  // ensure that match code is a string
   return () => {
-    socket.emit('JOIN_MATCH', { code, username, name })
+    socket.emit('JOIN_MATCH', { code: code.toString(), username, name })
   }
 }
 
@@ -324,7 +325,7 @@ export const leaveMatch = () => {
     const { match: { id: matchId } } = getState()
     socket.emit('LEAVE_MATCH', matchId)
 
-    setValue('matchId', null)
+    remove('matchId')
     window.location.href = '/'
   }
 }

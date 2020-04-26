@@ -2,7 +2,7 @@ import React from 'react'
 
 import BasicPage from 'components/Ui/BasicPage'
 import Button from 'components/Ui/Button'
-import { setValue } from 'utilities/localStorage'
+import { remove } from 'utilities/localStorage'
 
 import './style'
 
@@ -12,7 +12,7 @@ const PostGame = ({ match: { players }, profile: { username }, socketActions, is
   const didWin = result[0].username === username
 
   const goHome = () => {
-    setValue('matchId', null)
+    remove('matchId')
     window.location.href = '/'
   }
 
@@ -29,7 +29,7 @@ const PostGame = ({ match: { players }, profile: { username }, socketActions, is
         })}
 
         {!isAbandoned && <Button onClick={() => socketActions.restartMatch()}>Rematch</Button>}
-        <Button onClick={goHome}>Leave</Button>
+        <Button isSecondary onClick={goHome}>Leave</Button>
       </div>
     </BasicPage>
   )

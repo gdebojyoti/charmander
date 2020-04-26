@@ -12,3 +12,7 @@ export const getValue = label => {
 export const setValue = (label, value) => {
   window.localStorage.setItem(label, typeof value === 'object' ? JSON.stringify(value) : value)
 }
+
+export const remove = (label) => {
+  window.localStorage.removeItem(label)
+}

@@ -86,6 +86,17 @@ const Uno = (props) => {
     )
   }
 
+  // on match complete (i.e., when one player has no cards left)
+  if (status === matchStatus.COMPLETED) {
+    return (
+      <PostGame
+        socketActions={socketActions}
+        match={match}
+        profile={profile}
+      />
+    )
+  }
+
   // on match abandoned (i.e., only one player remains)
   if (status === matchStatus.ABANDONED) {
     return (
