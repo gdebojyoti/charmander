@@ -3,6 +3,7 @@ import React from 'react'
 import BasicPage from 'components/Ui/BasicPage'
 import Button from 'components/Ui/Button'
 
+import whatsapp from 'assets/icons/whatsapp.svg'
 import './style'
 
 const Lobby = ({ socketActions, match, profile: { username } }) => {
@@ -12,6 +13,10 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
     socketActions.startMatch({
       matchId
     })
+  }
+
+  const shareToWhatsApp = () => {
+    window.open(`whatsapp://send?text=Join me for a match of Uno - ${window.location.origin}/${code}`)
   }
 
   const isHost = host === username
@@ -47,7 +52,15 @@ const Lobby = ({ socketActions, match, profile: { username } }) => {
       </div>
 
       {button}
-      <Button onClick={() => socketActions.leaveMatch()}>Leave game</Button>
+
+      <div className='lobby__secondary-btns'>
+
+        <Button className='lobby__share-btn' isSecondary onClick={shareToWhatsApp}>
+          Share on
+          <img className='lobby__whatsapp-img' src={whatsapp} />
+        </Button>
+        <Button isSecondary onClick={() => socketActions.leaveMatch()}>Leave game</Button>
+      </div>
     </BasicPage>
   )
 }

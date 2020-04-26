@@ -2,6 +2,32 @@
   &__code {
     margin-top: 20px;
   }
+
+  &__secondary-btns {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .button {
+      width: auto;
+      margin-left: 15px;
+      
+      &:first-of-type {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__share-btn {
+    display: flex;
+    align-items: center;
+  }
+
+  &__whatsapp-img {
+    width: 14px;
+    height: 14px;
+    margin-left: 7px;
+  }
   
   .button {
     margin-top: 20px;
